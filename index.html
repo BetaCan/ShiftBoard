@@ -436,14 +436,14 @@
     const mx=Math.max(mn,parseInt(document.getElementById('shMx').value)||3);
     S.shops.push({id:uid(),name:nm,color:scCol(),minStaff:mn,maxStaff:mx,active:true});
     document.getElementById('shNm').value='';
-    save();rShops();uShopStats();rSC('addSC',[]);
+    save();rShops();uShopStats();renderSC('addSC',[]);
     toast(`${nm} added!`);
   }
   function removeShop(id){
     if(!confirm('Remove this shop? Staff assigned only to this shop will need updating.'))return;
     S.shops=S.shops.filter(s=>s.id!==id);
     S.staff.forEach(st=>{st.shops=(st.shops||[]).filter(x=>x!==id);});
-    save();rShops();uShopStats();rSC('addSC',[]);
+    save();rShops();uShopStats();renderSC('addSC',[]);
   }
   function togShop(id){const sh=S.shops.find(x=>x.id===id);if(sh){sh.active=!sh.active;save();rShops();uShopStats();}}
   function setAllShops(v){S.shops.forEach(s=>s.active=v);save();rShops();uShopStats();}
@@ -461,7 +461,7 @@
     const nm=document.getElementById('shENm').value.trim();if(!nm){toast('Name required','err');return;}
     sh.name=nm;sh.minStaff=Math.max(0,parseInt(document.getElementById('shEMn').value)||1);
     sh.maxStaff=Math.max(sh.minStaff,parseInt(document.getElementById('shEMx').value)||3);
-    save();closeMod();rShops();uShopStats();rSC('addSC',[]);toast('Shop updated!');
+    save();closeMod();rShops();uShopStats();renderSC('addSC',[]);toast('Shop updated!');
   }
   function rShops(){
     const el=document.getElementById('shopList');
@@ -498,7 +498,7 @@
     document.getElementById('nBrk').checked=true;
     document.getElementById('nBud').checked=false;
     document.getElementById('nU18').checked=false;
-    rSC('addSC',[]);
+    renderSC('addSC',[]);
     toast(`${nm} added!`);
   }
   function removeStaff(id){S.staff=S.staff.filter(s=>s.id!==id);save();rStaff();uStaffStats();}
@@ -513,7 +513,7 @@
     document.getElementById('eBrk').checked=s.hasBreak!==false;
     document.getElementById('eBud').checked=!!s.needsBuddy;
     document.getElementById('eU18').checked=!!s.under18;
-    rSC('editSC',s.shops||[]);
+    renderSC('editSC',s.shops||[]);
     document.getElementById('editOv').classList.add('on');
   }
   function saveEdit(){
@@ -806,7 +806,7 @@ David Brown | Shop B | 9 | 17 | yes | no | yes`;
   // ─────────────────────────────────────────────
   function init(){
     document.getElementById('planDate').value=S.date;
-    loadCfgUI();rShops();uShopStats();rSC('addSC',[]);rStaff();uStaffStats();
+    loadCfgUI();rShops();uShopStats();renderSC('addSC',[]);rStaff();uStaffStats();
     if(S.sched){rGrid();rPrint();}
   }
   document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeMod();}));
