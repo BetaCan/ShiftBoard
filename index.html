@@ -812,6 +812,16 @@ David Brown | Shop B | 9 | 17 | yes | no | yes`;
   document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeMod();}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
   load();init();
+
+  document.getElementById('planDate').value = S.date;
+
+  rShops();
+  uShopStats();
+  rStaff();
+  uStaffStats();
+
+  // 👇 THIS is the missing piece
+  renderSC('addSC', []);
 </script>
 </body>
 </html>
