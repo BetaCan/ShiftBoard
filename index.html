@@ -3,1107 +3,815 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ShiftBoard — Retail Staff Planner</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>ShiftBoard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #080A12;
-      --surface: #10131E;
-      --card: #171B2A;
-      --card-hover: #1C2133;
-      --border: #222740;
-      --border-light: #2C3255;
-      --text: #DCE1F7;
-      --text-dim: #5C6485;
-      --text-mid: #8891B8;
-      --accent: #4B7BFF;
-      --accent-dim: rgba(75,123,255,0.15);
-      --radius: 8px;
-      --radius-lg: 12px;
-      --z-till: #F59E0B;
-      --z-floor: #38BDF8;
-      --z-stock: #A78BFA;
-      --z-fitting: #34D399;
-      --z-service: #FB7185;
-      --z-supervisor: #FF8C42;
-      --z-delivery: #F472B6;
+    :root{
+      --bg:#0C0C0E;--s0:#111113;--s1:#18181C;--s2:#222228;--s3:#2E2E36;
+      --t0:#F0F0F4;--t1:#A8A8B8;--t2:#606070;--t3:#3A3A48;
+      --acc:#F5A623;--acc2:rgba(245,166,35,0.15);--acc3:rgba(245,166,35,0.08);
+      --ok:#3ECF8E;--warn:#F5A623;--err:#F5506A;--buddy:#C084FC;
+      --r:7px;--rL:12px;
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
-
-    /* ── HEADER ─────────────────────────────── */
-    header{
-      background:var(--surface);border-bottom:1px solid var(--border);
-      padding:0 20px;display:flex;align-items:center;gap:20px;height:58px;
-      position:sticky;top:0;z-index:100
-    }
-    .logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--text);white-space:nowrap}
-    .logo span{color:var(--accent)}
-    .header-divider{width:1px;height:28px;background:var(--border)}
-    nav{display:flex;gap:2px;align-items:center}
-    .tab-btn{
-      background:none;border:none;color:var(--text-dim);font-family:'Barlow',sans-serif;
-      font-weight:700;font-size:13px;padding:7px 14px;cursor:pointer;border-radius:var(--radius);
-      transition:all 0.15s;letter-spacing:0.6px;text-transform:uppercase
-    }
-    .tab-btn:hover{color:var(--text);background:var(--card)}
-    .tab-btn.active{color:var(--accent);background:var(--accent-dim)}
-    .header-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-    .date-label{font-size:12px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:0.6px}
-    input[type="date"]{
-      background:var(--card);border:1px solid var(--border);color:var(--text);
-      padding:6px 10px;border-radius:var(--radius);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer
-    }
-    input[type="date"]:focus{outline:none;border-color:var(--accent)}
-
-    /* ── LAYOUT ─────────────────────────────── */
-    main{padding:22px;max-width:1700px;margin:0 auto}
-    .tab-section{display:none}
-    .tab-section.active{display:block}
-    .g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-    .mt-4{margin-top:16px}
-    .mb-4{margin-bottom:16px}
-    .mb-3{margin-bottom:12px}
-    .flex{display:flex}
-    .aic{align-items:center}
-    .jsb{justify-content:space-between}
-    .gap-3{gap:12px}
-    .gap-4{gap:16px}
-
-    /* ── CARDS ─────────────────────────────── */
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}
-    .card-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;margin-bottom:14px}
-    .section-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px}
-
-    /* ── BUTTONS ─────────────────────────────── */
-    .btn{
-      background:var(--card);border:1px solid var(--border);color:var(--text);
-      padding:8px 15px;border-radius:var(--radius);font-family:'Barlow',sans-serif;
-      font-weight:700;font-size:13px;cursor:pointer;transition:all 0.15s;
-      display:inline-flex;align-items:center;gap:7px;letter-spacing:0.3px;white-space:nowrap
-    }
-    .btn:hover{background:var(--card-hover);border-color:var(--border-light)}
-    .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
-    .btn-primary:hover{background:#5B8BFF;border-color:#5B8BFF}
-    .btn-sm{padding:5px 10px;font-size:12px}
-    .btn-ghost{background:none;border-color:transparent;color:var(--text-dim)}
-    .btn-ghost:hover{color:var(--text);background:var(--card);border-color:var(--border)}
-    .btn-danger{color:#FB7185}
-    .btn-danger:hover{border-color:#FB7185;background:rgba(251,113,133,0.1)}
-
-    /* ── FORMS ─────────────────────────────── */
-    .form-row{display:flex;gap:12px;flex-wrap:wrap}
-    .form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:110px}
-    label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim)}
-    input[type="text"],input[type="time"],select,textarea{
-      background:var(--surface);border:1px solid var(--border);color:var(--text);
-      padding:8px 11px;border-radius:var(--radius);font-family:'Barlow',sans-serif;font-size:14px;transition:border-color 0.15s
-    }
-    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
-    textarea{font-family:'DM Mono',monospace;font-size:12px;resize:vertical;min-height:110px;line-height:1.6}
+    body{background:var(--bg);color:var(--t0);font-family:'Manrope',sans-serif;min-height:100vh;overflow-x:hidden}
+    header{position:sticky;top:0;z-index:100;background:var(--s0);border-bottom:1px solid var(--s3);height:54px;display:flex;align-items:center;padding:0 18px;gap:16px}
+    .logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:1px;white-space:nowrap}
+    .logo em{color:var(--acc);font-style:normal}
+    .hdiv{width:1px;height:22px;background:var(--s3)}
+    nav{display:flex;gap:2px}
+    .tb{background:none;border:none;color:var(--t2);font-family:'Manrope',sans-serif;font-weight:700;font-size:12px;padding:6px 12px;cursor:pointer;border-radius:var(--r);transition:.15s;letter-spacing:.5px;text-transform:uppercase}
+    .tb:hover{color:var(--t0);background:var(--s2)}
+    .tb.on{color:var(--acc);background:var(--acc3)}
+    .hright{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .dlbl{font-size:11px;color:var(--t2);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+    input[type=date]{background:var(--s1);border:1px solid var(--s3);color:var(--t0);padding:5px 9px;border-radius:var(--r);font-family:'IBM Plex Mono',monospace;font-size:12px;cursor:pointer}
+    input[type=date]:focus{outline:none;border-color:var(--acc)}
+    main{padding:20px;max-width:1800px;margin:0 auto}
+    .ts{display:none}.ts.on{display:block}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    .mb2{margin-bottom:8px}.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}
+    .row{display:flex}.aic{align-items:center}.jsb{justify-content:space-between}.wrap{flex-wrap:wrap}
+    .gap2{gap:8px}.gap3{gap:12px}.gap4{gap:16px}
+    .card{background:var(--s1);border:1px solid var(--s3);border-radius:var(--rL);padding:18px}
+    .ct{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:12px}
+    .st{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
+    .btn{background:var(--s1);border:1px solid var(--s3);color:var(--t0);padding:7px 13px;border-radius:var(--r);font-family:'Manrope',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    .btn:hover{background:var(--s2);border-color:var(--t3)}
+    .btn-p{background:var(--acc);border-color:var(--acc);color:#000}
+    .btn-p:hover{background:#f7b840;border-color:#f7b840}
+    .btn-sm{padding:4px 9px;font-size:11px}
+    .btn-g{background:none;border-color:transparent;color:var(--t2)}
+    .btn-g:hover{color:var(--t0);background:var(--s2);border-color:var(--s3)}
+    .btn-d{color:var(--err)}
+    .btn-d:hover{border-color:var(--err);background:rgba(245,80,106,.1)}
+    .frow{display:flex;gap:10px;flex-wrap:wrap}
+    .fg{display:flex;flex-direction:column;gap:4px;flex:1;min-width:100px}
+    .fl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t2)}
+    input[type=text],input[type=time],select,textarea{background:var(--s0);border:1px solid var(--s3);color:var(--t0);padding:7px 10px;border-radius:var(--r);font-family:'Manrope',sans-serif;font-size:13px;transition:border-color .15s;width:100%}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+    input.ei{border-color:var(--err)!important}
+    textarea{font-family:'IBM Plex Mono',monospace;font-size:12px;resize:vertical;min-height:100px;line-height:1.7}
     select{cursor:pointer}
-
-    /* ── STATS BAR ─────────────────────────────── */
-    .stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-    .stat{
-      background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-      padding:8px 18px;display:flex;align-items:center;gap:10px
-    }
-    .stat-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent);line-height:1}
-    .stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:var(--text-dim)}
-
-    /* ── INFO BOX ─────────────────────────────── */
-    .info-box{
-      background:rgba(75,123,255,0.07);border:1px solid rgba(75,123,255,0.2);
-      border-radius:var(--radius);padding:11px 14px;font-size:13px;color:#7BA7FF;margin-bottom:14px;line-height:1.6
-    }
-    .info-box code{font-family:'DM Mono',monospace;background:rgba(75,123,255,0.18);padding:1px 5px;border-radius:3px;font-size:11px}
-
-    /* ── STAFF LIST ─────────────────────────────── */
-    .staff-list{display:flex;flex-direction:column;gap:7px}
-    .staff-item{
-      background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-      padding:10px 14px;display:flex;align-items:center;gap:14px;transition:border-color 0.15s
-    }
-    .staff-item:hover{border-color:var(--border-light)}
-    .s-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-    .s-name{font-weight:700;font-size:14px;min-width:140px}
-    .s-role{color:var(--text-mid);font-size:13px;min-width:100px}
-    .s-skills{display:flex;gap:4px;flex-wrap:wrap;flex:1}
-    .s-time{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-mid);white-space:nowrap}
-    .s-actions{display:flex;gap:4px;flex-shrink:0}
-    .badge{
-      background:var(--card);border:1px solid var(--border);
-      padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px
-    }
-
-    /* ── SKILLS SELECTOR ─────────────────────────────── */
-    .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-    .skill-chip{
-      display:flex;align-items:center;gap:7px;cursor:pointer;padding:7px 10px;
-      border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);
-      transition:all 0.15s;user-select:none
-    }
-    .skill-chip.on{border-color:currentColor;background:rgba(255,255,255,0.05)}
-    .skill-chip input{display:none}
-    .skill-chip span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px}
-    .skill-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-
-    /* ── SCHEDULE GRID ─────────────────────────────── */
-    .grid-wrap{overflow:auto;border-radius:var(--radius-lg);border:1px solid var(--border);max-height:70vh}
-    .grid-wrap table{border-collapse:collapse;min-width:max-content}
-    .grid-wrap th,.grid-wrap td{border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
-    .grid-wrap tr:last-child td{border-bottom:none}
-
-    .th-corner,.th-staff{
-      background:var(--surface);position:sticky;top:0;z-index:20;
-      font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;
-      color:var(--text-dim);padding:9px 14px;text-align:left;white-space:nowrap
-    }
-    .th-corner{left:0;z-index:30;min-width:180px}
-    .th-time{
-      background:var(--surface);position:sticky;top:0;z-index:19;
-      font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);
-      padding:9px 4px;text-align:center;width:68px;white-space:nowrap
-    }
-    .th-time.hr{color:var(--text);font-weight:500;border-right:1px solid var(--border-light)}
-
-    .td-name{
-      background:var(--surface);position:sticky;left:0;z-index:10;
-      padding:0 14px;height:42px;white-space:nowrap;min-width:180px
-    }
-    .td-name-inner{display:flex;align-items:center;gap:8px}
-    .td-name-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .td-name-text{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;max-width:130px}
-
-    .td-cell{
-      width:68px;height:42px;text-align:center;vertical-align:middle;
-      font-family:'DM Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;
-      letter-spacing:0.3px;position:relative;cursor:default
-    }
-    .td-cell.hr{border-right:1px solid var(--border-light)}
-    .td-cell.off{background:transparent}
-    .td-cell.brk{background:rgba(75,85,99,0.25);color:#6B7280}
-    .td-cell.work{color:rgba(255,255,255,0.85)}
-    .td-cell:hover .tip{opacity:1;pointer-events:none}
-    .tip{
-      position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);
-      background:#0A0C15;border:1px solid var(--border-light);color:var(--text);
-      padding:5px 9px;border-radius:6px;font-family:'Barlow',sans-serif;font-size:12px;
-      white-space:nowrap;opacity:0;transition:opacity 0.12s;z-index:50;pointer-events:none
-    }
-
-    /* ── LEGEND ─────────────────────────────── */
-    .legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-    .leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-mid)}
-    .leg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0}
-
-    /* ── PRINT CARDS ─────────────────────────────── */
-    .print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
-    .pcard{background:#fff;color:#0F172A;border:2px solid #E2E8F0;border-radius:12px;padding:18px;page-break-inside:avoid}
-    .pcard-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #E2E8F0}
-    .pcard-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:#0F172A;display:flex;align-items:center;gap:8px}
-    .pcard-meta{font-size:12px;color:#64748B;margin-top:3px}
-    .pcard-shift{font-family:'DM Mono',monospace;font-size:13px;color:#64748B;text-align:right}
-    .pcard-date{font-size:11px;color:#94A3B8;margin-top:2px}
-    .pslots{display:flex;flex-direction:column;gap:4px}
-    .pslot{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:6px}
-    .pslot-time{font-family:'DM Mono',monospace;font-size:11px;color:#64748B;width:90px;flex-shrink:0}
-    .pslot-zone{font-weight:700;font-size:13px}
-
-    /* ── ZONE CONFIG ─────────────────────────────── */
-    .zone-row{
-      display:flex;align-items:center;gap:12px;background:var(--surface);
-      border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px
-    }
-    .zone-swatch{width:13px;height:13px;border-radius:50%;flex-shrink:0}
-
-    /* ── EMPTY STATE ─────────────────────────────── */
-    .empty{text-align:center;padding:48px 24px;color:var(--text-dim)}
-    .empty .ei{font-size:44px;margin-bottom:10px}
-    .empty h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--text-mid);margin-bottom:6px}
-    .empty p{font-size:14px}
-
-    /* ── MODAL ─────────────────────────────── */
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:center;justify-content:center}
-    .overlay.open{display:flex}
-    .modal{background:var(--card);border:1px solid var(--border-light);border-radius:var(--radius-lg);padding:26px;width:520px;max-width:calc(100vw - 32px);max-height:85vh;overflow-y:auto}
-    .modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:18px}
-    .modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
-
-    /* ── TOAST ─────────────────────────────── */
-    .toast{
-      position:fixed;bottom:20px;right:20px;background:var(--card);border:1px solid var(--border);
-      color:var(--text);padding:11px 18px;border-radius:var(--radius-lg);font-size:14px;
-      z-index:1000;transform:translateY(80px);opacity:0;transition:all 0.28s
-    }
+    .th{font-size:10px;color:var(--t2);margin-top:3px}
+    .trow{display:flex;align-items:center;gap:9px}
+    .trow .fl{font-size:12px;color:var(--t0);text-transform:none;letter-spacing:0;font-weight:600;cursor:pointer}
+    .tog{position:relative;width:36px;height:20px;flex-shrink:0}
+    .tog input{opacity:0;width:0;height:0}
+    .tsl{position:absolute;inset:0;background:var(--s3);border-radius:20px;cursor:pointer;transition:.2s}
+    .tsl:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:var(--t2);border-radius:50%;transition:.2s}
+    .tog input:checked+.tsl{background:var(--acc)}
+    .tog input:checked+.tsl:before{transform:translateX(16px);background:#000}
+    .tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border:1px solid}
+    .tg-buddy{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.35);color:var(--buddy)}
+    .tg-nobrk{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:var(--warn)}
+    .tg-u18{background:rgba(62,207,142,.1);border-color:rgba(62,207,142,.3);color:var(--ok)}
+    .tg-shop{border-color:var(--s3);background:var(--s2)}
+    .sbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .stat{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:7px 16px;display:flex;align-items:center;gap:9px}
+    .sv{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--acc);line-height:1}
+    .sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t2)}
+    .ib{background:var(--acc3);border:1px solid rgba(245,166,35,.2);border-radius:var(--r);padding:10px 13px;font-size:12px;color:#f5c86b;margin-bottom:12px;line-height:1.7}
+    .ib code{font-family:'IBM Plex Mono',monospace;background:rgba(245,166,35,.18);padding:1px 5px;border-radius:3px;font-size:10px}
+    .wb{background:rgba(245,80,106,.07);border:1px solid rgba(245,80,106,.2);border-radius:var(--r);padding:9px 13px;font-size:12px;color:#f57e8e;line-height:1.6}
+    .shop-list{display:flex;flex-direction:column;gap:6px}
+    .shi{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:10px 13px;display:flex;align-items:center;gap:11px;transition:border-color .15s}
+    .shi:hover{border-color:var(--t3)}
+    .shi.inact{opacity:.45}
+    .sh-sw{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+    .sh-nm{font-weight:700;font-size:13px;flex:1}
+    .sh-cp{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t1);white-space:nowrap}
+    .staff-list{display:flex;flex-direction:column;gap:6px}
+    .si{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:9px 13px;display:flex;align-items:center;gap:11px;transition:border-color .15s;flex-wrap:wrap}
+    .si:hover{border-color:var(--t3)}
+    .si.bl{border-left:3px solid var(--buddy)}
+    .si.gl{border-left:3px solid var(--ok)}
+    .sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .snm{font-weight:700;font-size:13px;min-width:130px}
+    .srl{color:var(--t1);font-size:12px;min-width:80px}
+    .stags{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+    .stm{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t1);white-space:nowrap}
+    .sact{display:flex;gap:4px;flex-shrink:0}
+    .shop-checks{display:flex;flex-wrap:wrap;gap:6px}
+    .sc{display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 10px;border-radius:var(--r);border:1px solid var(--s3);background:var(--s0);transition:.15s;user-select:none}
+    .sc.on{background:rgba(255,255,255,.04)}
+    .sc input{display:none}
+    .sc-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+    .sc span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+    .gw{overflow:auto;border-radius:var(--rL);border:1px solid var(--s3);max-height:72vh}
+    .gw table{border-collapse:collapse;min-width:max-content}
+    .gw th,.gw td{border-right:1px solid var(--s3);border-bottom:1px solid var(--s3)}
+    .gw tr:last-child td{border-bottom:none}
+    .th-co{background:var(--s0);position:sticky;top:0;left:0;z-index:30;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);padding:8px 13px;min-width:200px;white-space:nowrap}
+    .th-tm{background:var(--s0);position:sticky;top:0;z-index:19;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--t2);padding:8px 3px;text-align:center;width:62px;white-space:nowrap}
+    .th-tm.hr{color:var(--t0);font-weight:500;border-right:1px solid var(--t3)}
+    .tr-cv td{background:var(--s0);height:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;text-align:center;vertical-align:middle}
+    .cv-lb{position:sticky;left:0;background:var(--s0);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);padding:0 13px;text-align:left;white-space:nowrap;z-index:10}
+    .cv-ok{color:var(--ok)}.cv-lo{color:var(--warn)}.cv-0{background:rgba(245,80,106,.15)!important;color:var(--err);font-weight:700}
+    .td-n{background:var(--s0);position:sticky;left:0;z-index:10;padding:0 13px;height:40px;min-width:200px;white-space:nowrap}
+    .td-ni{display:flex;align-items:center;gap:7px}
+    .td-ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .td-ntxt{font-size:12px;font-weight:700;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+    .tc{width:62px;height:40px;text-align:center;vertical-align:middle;font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:500;text-transform:uppercase;position:relative;cursor:default}
+    .tc.hr{border-right:1px solid var(--t3)}
+    .tc.off{background:transparent}
+    .tc.brk{background:rgba(96,96,112,.2);color:#606070}
+    .tc.work{color:rgba(255,255,255,.8)}
+    .tc.mvd{outline:1px dashed rgba(255,255,255,.25);outline-offset:-2px}
+    .tc.ba{outline:2px solid var(--buddy);outline-offset:-2px}
+    .tc:hover .tip{opacity:1}
+    .tip{position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#050507;border:1px solid var(--s3);color:var(--t0);padding:4px 8px;border-radius:5px;font-family:'Manrope',sans-serif;font-size:11px;white-space:nowrap;opacity:0;transition:.12s;z-index:60;pointer-events:none}
+    .lgnd{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t1)}
+    .ldot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+    .aal{border-radius:var(--r);padding:7px 12px;font-size:12px;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+    .al-e{background:rgba(245,80,106,.1);border:1px solid rgba(245,80,106,.25);color:#f57e8e}
+    .al-w{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);color:#f5c86b}
+    .print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+    .pc{background:#fff;color:#0F172A;border:2px solid #E2E8F0;border-radius:10px;padding:16px;page-break-inside:avoid}
+    .pc.pc-b{border-left:5px solid #9333EA}
+    .pc.pc-u{border-left:5px solid #16A34A}
+    .pch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #E2E8F0}
+    .pcnm{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#0F172A;display:flex;align-items:center;gap:7px}
+    .pcmt{font-size:11px;color:#64748B;margin-top:3px}
+    .pcsh{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#64748B;text-align:right}
+    .pcd{font-size:10px;color:#94A3B8;margin-top:2px}
+    .pcno{background:#F3E8FF;border:1px solid #D8B4FE;border-radius:5px;padding:6px 10px;font-size:11px;color:#7E22CE;font-weight:700;margin-bottom:10px}
+    .pcu{background:#DCFCE7;border:1px solid #86EFAC;border-radius:5px;padding:6px 10px;font-size:11px;color:#15803D;font-weight:700;margin-bottom:10px}
+    .pslots{display:flex;flex-direction:column;gap:3px}
+    .pslot{display:flex;align-items:center;gap:9px;padding:5px 9px;border-radius:5px}
+    .pst{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#64748B;width:88px;flex-shrink:0}
+    .psz{font-weight:700;font-size:12px}
+    .empty{text-align:center;padding:44px 20px;color:var(--t2)}
+    .empty .ei{font-size:40px;margin-bottom:8px}
+    .empty h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:5px}
+    .empty p{font-size:13px}
+    .ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center}
+    .ov.on{display:flex}
+    .modal{background:var(--s1);border:1px solid var(--t3);border-radius:var(--rL);padding:24px;width:520px;max-width:calc(100vw - 28px);max-height:88vh;overflow-y:auto}
+    .modal.w{width:600px}
+    .mt2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:16px}
+    .mft{display:flex;gap:7px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid var(--s3)}
+    hr{border:none;border-top:1px solid var(--s3);margin:14px 0}
+    .toast{position:fixed;bottom:18px;right:18px;background:var(--s1);border:1px solid var(--s3);color:var(--t0);padding:10px 16px;border-radius:var(--rL);font-size:13px;z-index:1000;transform:translateY(60px);opacity:0;transition:.25s}
     .toast.show{transform:translateY(0);opacity:1}
-    .toast.ok{border-color:#34D399;color:#34D399}
-    .toast.err{border-color:#FB7185;color:#FB7185}
-
-    /* ── DIVIDER ─────────────────────────────── */
-    hr{border:none;border-top:1px solid var(--border);margin:16px 0}
-
-    /* ── SCROLLBAR ─────────────────────────────── */
+    .toast.ok{border-color:var(--ok);color:var(--ok)}
+    .toast.err{border-color:var(--err);color:var(--err)}
+    .toast.warn{border-color:var(--warn);color:var(--warn)}
     ::-webkit-scrollbar{width:5px;height:5px}
-    ::-webkit-scrollbar-track{background:var(--surface)}
-    ::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}
-    ::-webkit-scrollbar-thumb:hover{background:var(--text-dim)}
-
-    /* ── PRINT MEDIA ─────────────────────────────── */
-    @media print{
-      body{background:#fff;color:#000}
-      header,.no-print{display:none!important}
-      .pcard{border-color:#CBD5E1}
-      main{padding:0}
-    }
-
-    @media(max-width:768px){
-      .g2,.g3{grid-template-columns:1fr}
-      .skills-grid{grid-template-columns:repeat(2,1fr)}
-      .s-role,.s-skills{display:none}
-    }
+    ::-webkit-scrollbar-track{background:var(--s0)}
+    ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+    @media print{body{background:#fff;color:#000}header,.no-print{display:none!important}main{padding:0}}
+    @media(max-width:768px){.g2,.g3{grid-template-columns:1fr}.srl,.stags{display:none}}
   </style>
 </head>
 <body>
-
 <header>
-  <div class="logo">Shift<span>Board</span></div>
-  <div class="header-divider"></div>
+  <div class="logo">Shift<em>Board</em></div>
+  <div class="hdiv"></div>
   <nav>
-    <button class="tab-btn active" onclick="switchTab('staff',this)">👥 Staff</button>
-    <button class="tab-btn" onclick="switchTab('schedule',this)">📋 Schedule</button>
-    <button class="tab-btn" onclick="switchTab('print',this)">🖨 Print</button>
-    <button class="tab-btn" onclick="switchTab('settings',this)">⚙ Settings</button>
+    <button class="tb on" onclick="sw('shops',this)">🏪 Shops</button>
+    <button class="tb" onclick="sw('staff',this)">👥 Staff</button>
+    <button class="tb" onclick="sw('sched',this)">📋 Overview</button>
+    <button class="tb" onclick="sw('print',this)">🖨 Individual</button>
+    <button class="tb" onclick="sw('cfg',this)">⚙ Settings</button>
   </nav>
-  <div class="header-right">
-    <span class="date-label">Date:</span>
-    <input type="date" id="planDate" onchange="onDateChange()">
+  <div class="hright">
+    <span class="dlbl">Date</span>
+    <input type="date" id="planDate" onchange="onDateCh()">
   </div>
 </header>
-
 <main>
 
-  <!-- ═══════════════════════════ STAFF TAB ═══════════════════════════ -->
-  <div id="tab-staff" class="tab-section active">
-
-    <div class="stats-bar" id="statsBar">
-      <div class="stat"><div class="stat-val" id="sTotal">0</div><div class="stat-lbl">Staff</div></div>
-      <div class="stat"><div class="stat-val" id="sScheduled">0</div><div class="stat-lbl">Scheduled</div></div>
-      <div class="stat"><div class="stat-val" id="sZones">0</div><div class="stat-lbl">Active Zones</div></div>
-      <div class="stat"><div class="stat-val" id="sSkills">0</div><div class="stat-lbl">Skill Types</div></div>
+  <!-- SHOPS -->
+  <div id="ts-shops" class="ts on">
+    <div class="sbar">
+      <div class="stat"><div class="sv" id="shAct">0</div><div class="sl">Active Shops</div></div>
+      <div class="stat"><div class="sv" id="shCap">0</div><div class="sl">Total Capacity</div></div>
+      <div class="stat"><div class="sv" id="shMinS">0</div><div class="sl">Min Required</div></div>
     </div>
-
-    <div class="g2 mb-4">
-
-      <!-- IMPORT -->
+    <div class="g2 mb4">
       <div class="card">
-        <div class="card-title">📥 Import from File</div>
-        <div class="info-box">
-          Format each line as: <code>Name | Skills | Start | End</code><br>
-          Skills: <code>till</code> <code>floor</code> <code>stock</code> <code>fitting</code> <code>service</code> <code>supervisor</code> <code>delivery</code><br>
-          Lines starting with <code>#</code> are ignored.
+        <div class="ct">➕ Add Shop</div>
+        <div class="frow mb3">
+          <div class="fg"><div class="fl">Shop Name *</div><input type="text" id="shNm" placeholder="e.g. Westfield, High Street…"></div>
+          <div class="fg" style="max-width:88px"><div class="fl">Min Staff</div><input type="text" id="shMn" value="1"></div>
+          <div class="fg" style="max-width:88px"><div class="fl">Max Staff</div><input type="text" id="shMx" value="3"></div>
         </div>
-        <div class="form-group mb-4">
-          <label>Paste Staff Data</label>
-          <textarea id="importText" placeholder="Alice Johnson | till, floor, supervisor | 09:00 | 17:30&#10;Bob Smith | stock, delivery | 06:00 | 14:00&#10;Carol White | floor, fitting, service | 10:00 | 18:00"></textarea>
-        </div>
-        <div class="flex gap-3 aic">
-          <button class="btn btn-primary" onclick="doImport()">⚡ Import</button>
-          <span style="color:var(--text-dim);font-size:13px">— or —</span>
-          <label class="btn" style="cursor:pointer">
-            📂 Upload .txt
-            <input type="file" accept=".txt" style="display:none" onchange="importFile(event)">
-          </label>
-          <button class="btn btn-sm btn-ghost" onclick="dlTemplate()">⬇ Template</button>
-        </div>
+        <button class="btn btn-p" onclick="addShop()">Add Shop</button>
       </div>
-
-      <!-- ADD MANUALLY -->
       <div class="card">
-        <div class="card-title">➕ Add Manually</div>
-        <div class="form-row mb-3">
-          <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" id="nName" placeholder="e.g. Alice Johnson" autocomplete="off">
-          </div>
-          <div class="form-group" style="max-width:140px">
-            <label>Role (optional)</label>
-            <input type="text" id="nRole" placeholder="e.g. Supervisor" autocomplete="off">
-          </div>
-        </div>
-        <div class="form-row mb-3">
-          <div class="form-group">
-            <label>Shift Start</label>
-            <input type="time" id="nStart" value="09:00">
-          </div>
-          <div class="form-group">
-            <label>Shift End</label>
-            <input type="time" id="nEnd" value="17:00">
-          </div>
-        </div>
-        <div class="form-group mb-4">
-          <label>Skills</label>
-          <div class="skills-grid" id="addSkills"></div>
-        </div>
-        <button class="btn btn-primary" onclick="addStaff()">Add Staff Member</button>
+        <div class="ct">ℹ️ Daily Setup</div>
+        <div class="ib" style="margin-bottom:0">Add all your shops here. Each day <strong>toggle shops on/off</strong> and adjust min/max to match what's open. Staff are then matched to shops they're qualified for — coverage is checked every 30 min across the whole day including during breaks.</div>
       </div>
     </div>
-
-    <!-- ROSTER -->
     <div class="card">
-      <div class="flex jsb aic mb-4">
-        <div class="section-title">👥 Staff Roster</div>
-        <div class="flex gap-3">
-          <button class="btn btn-sm btn-danger no-print" onclick="clearAll()">Clear All</button>
+      <div class="row jsb aic mb3">
+        <div class="st">🏪 All Shops</div>
+        <div class="row gap2"><button class="btn btn-sm" onclick="setAllShops(true)">Enable All</button><button class="btn btn-sm" onclick="setAllShops(false)">Disable All</button></div>
+      </div>
+      <div id="shopList"><div class="empty"><div class="ei">🏪</div><h3>No Shops Yet</h3><p>Add your locations above.</p></div></div>
+    </div>
+  </div>
+
+  <!-- STAFF -->
+  <div id="ts-staff" class="ts">
+    <div class="sbar">
+      <div class="stat"><div class="sv" id="stTot">0</div><div class="sl">Staff</div></div>
+      <div class="stat"><div class="sv" id="stBud">0</div><div class="sl">Need Buddy</div></div>
+      <div class="stat"><div class="sv" id="stU18">0</div><div class="sl">Under 18</div></div>
+      <div class="stat"><div class="sv" id="stNBrk">0</div><div class="sl">No Break</div></div>
+    </div>
+    <div class="g2 mb4">
+      <div class="card">
+        <div class="ct">📥 Bulk Import</div>
+        <div class="ib">
+          <strong>Format:</strong> <code>Name | Shops | Start | End | Break | Buddy | Under18</code><br>
+          Last 3 optional — defaults: break <code>yes</code>, buddy <code>no</code>, under18 <code>no</code><br>
+          Times: <code>9</code> <code>9:30</code> <code>930</code> <code>9am</code> <code>17:30</code> all work<br>
+          Shops = comma-separated names (must match exactly). Use <code>any</code> or leave blank for all shops.
+        </div>
+        <div class="fg mb3"><div class="fl">Paste or upload staff data</div>
+          <textarea id="impTxt" placeholder="Alice | Shop A, Shop B | 9 | 17:30&#10;Bob | Shop A | 8am | 2pm | no&#10;Carol | any | 10 | 18 | yes | yes&#10;David | Shop B | 9 | 17 | yes | no | yes"></textarea>
+        </div>
+        <div class="row gap3 aic wrap">
+          <button class="btn btn-p" onclick="doImport()">⚡ Import</button>
+          <span style="color:var(--t2);font-size:12px">— or —</span>
+          <label class="btn" style="cursor:pointer">📂 Upload .txt<input type="file" accept=".txt" style="display:none" onchange="importFile(event)"></label>
+          <button class="btn btn-sm btn-g" onclick="dlTpl()">⬇ Template</button>
         </div>
       </div>
-      <div id="rosterList"><div class="empty"><div class="ei">👤</div><h3>No Staff Yet</h3><p>Import a file or add members manually above.</p></div></div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════ SCHEDULE TAB ═══════════════════════════ -->
-  <div id="tab-schedule" class="tab-section">
-    <div class="flex jsb aic mb-4 no-print">
-      <div class="flex aic gap-4">
-        <div class="section-title">📋 Daily Schedule</div>
-        <div class="legend" id="zoneLegend"></div>
-      </div>
-      <button class="btn btn-primary" onclick="generateSchedule()">⚡ Generate Schedule</button>
-    </div>
-    <div id="schedGrid">
-      <div class="empty card"><div class="ei">📋</div><h3>No Schedule Yet</h3><p>Add staff on the Staff tab, then click <strong>Generate Schedule</strong>.</p></div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════ PRINT TAB ═══════════════════════════ -->
-  <div id="tab-print" class="tab-section">
-    <div class="flex jsb aic mb-4 no-print">
-      <div class="section-title">🖨 Individual Schedules</div>
-      <button class="btn btn-primary" onclick="window.print()">🖨 Print All</button>
-    </div>
-    <div id="printArea">
-      <div class="empty card"><div class="ei">🖨</div><h3>Nothing to Print</h3><p>Generate a schedule first, then come back here.</p></div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════ SETTINGS TAB ═══════════════════════════ -->
-  <div id="tab-settings" class="tab-section">
-    <div class="g2 mb-4">
-
-      <!-- DAY SETTINGS -->
       <div class="card">
-        <div class="card-title">⏰ Day & Break Settings</div>
-        <div class="g3 mb-3">
-          <div class="form-group">
-            <label>Day Start</label>
-            <input type="time" id="sDayStart" value="08:00" onchange="saveSettings()">
-          </div>
-          <div class="form-group">
-            <label>Day End</label>
-            <input type="time" id="sDayEnd" value="21:00" onchange="saveSettings()">
-          </div>
-          <div class="form-group">
-            <label>Break Length</label>
-            <select id="sBreakLen" onchange="saveSettings()">
-              <option value="30">30 min</option>
-              <option value="45" selected>45 min</option>
-              <option value="60">60 min</option>
-            </select>
-          </div>
+        <div class="ct">➕ Add Manually</div>
+        <div class="frow mb3">
+          <div class="fg"><div class="fl">Full Name *</div><input type="text" id="nNm" autocomplete="off" placeholder="e.g. Alice Johnson"></div>
+          <div class="fg" style="max-width:130px"><div class="fl">Role (optional)</div><input type="text" id="nRl" autocomplete="off" placeholder="e.g. Team Lead"></div>
+        </div>
+        <div class="frow mb3">
+          <div class="fg"><div class="fl">Shift Start</div><input type="text" id="nSt" placeholder="9, 9:30, 9am, 09:00"><div class="th">Type freely — any format works</div></div>
+          <div class="fg"><div class="fl">Shift End</div><input type="text" id="nEn" placeholder="17:30, 5pm, 1730"><div class="th">Type freely — any format works</div></div>
+        </div>
+        <div class="fg mb3"><div class="fl">Can Work At (leave empty = any shop)</div><div class="shop-checks" id="addSC"></div></div>
+        <div class="row gap4 wrap mb3">
+          <div class="trow"><label class="tog"><input type="checkbox" id="nBrk" checked><span class="tsl"></span></label><label class="fl" for="nBrk">☕ Gets a break</label></div>
+          <div class="trow"><label class="tog"><input type="checkbox" id="nBud"><span class="tsl"></span></label><label class="fl" for="nBud">🫂 Needs a buddy</label></div>
+          <div class="trow"><label class="tog"><input type="checkbox" id="nU18"><span class="tsl"></span></label><label class="fl" for="nU18">🌱 Under 18</label></div>
+        </div>
+        <button class="btn btn-p" onclick="addStaff()">Add Staff Member</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row jsb aic mb3"><div class="st">👥 Staff Roster</div><button class="btn btn-sm btn-d no-print" onclick="clearStaff()">Clear All</button></div>
+      <div id="staffList"><div class="empty"><div class="ei">👤</div><h3>No Staff Yet</h3><p>Import or add staff above.</p></div></div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="ts-sched" class="ts">
+    <div class="row jsb aic mb4 no-print wrap gap3">
+      <div class="row aic gap4 wrap"><div class="st">📋 Daily Overview</div><div class="lgnd" id="lgnd"></div></div>
+      <button class="btn btn-p" onclick="genSched()">⚡ Generate Schedule</button>
+    </div>
+    <div id="alertArea" class="mb3"></div>
+    <div id="schedGrid"><div class="empty card"><div class="ei">📋</div><h3>No Schedule</h3><p>Add shops &amp; staff, then click Generate Schedule.</p></div></div>
+  </div>
+
+  <!-- INDIVIDUAL -->
+  <div id="ts-print" class="ts">
+    <div class="row jsb aic mb4 no-print">
+      <div class="st">🖨 Individual Schedules</div>
+      <button class="btn btn-p" onclick="window.print()">🖨 Print All</button>
+    </div>
+    <div id="printArea"><div class="empty card"><div class="ei">🖨</div><h3>Nothing to Print</h3><p>Generate a schedule first.</p></div></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="ts-cfg" class="ts">
+    <div class="g2 mb4">
+      <div class="card">
+        <div class="ct">⏰ Break Settings</div>
+        <div class="g3 mb3">
+          <div class="fg"><div class="fl">Day Start</div><input type="time" id="sDayS" value="08:00" onchange="saveCfg()"></div>
+          <div class="fg"><div class="fl">Day End</div><input type="time" id="sDayE" value="21:00" onchange="saveCfg()"></div>
+          <div class="fg"><div class="fl">Break Length</div><select id="sBrkL" onchange="saveCfg()"><option value="30">30 min</option><option value="45" selected>45 min</option><option value="60">60 min</option></select></div>
         </div>
         <div class="g3">
-          <div class="form-group">
-            <label>Earliest Break</label>
-            <input type="time" id="sBreakFrom" value="11:00" onchange="saveSettings()">
-          </div>
-          <div class="form-group">
-            <label>Latest Break End</label>
-            <input type="time" id="sBreakTo" value="15:00" onchange="saveSettings()">
-          </div>
-          <div class="form-group">
-            <label>Min Shift for Break</label>
-            <select id="sBreakMin" onchange="saveSettings()">
-              <option value="180">3 hrs</option>
-              <option value="240" selected>4 hrs</option>
-              <option value="300">5 hrs</option>
-            </select>
-          </div>
+          <div class="fg"><div class="fl">Earliest Break</div><input type="time" id="sBrkF" value="11:00" onchange="saveCfg()"></div>
+          <div class="fg"><div class="fl">Latest Break End</div><input type="time" id="sBrkT" value="15:00" onchange="saveCfg()"></div>
+          <div class="fg"><div class="fl">Min Shift for Break</div><select id="sBrkM" onchange="saveCfg()"><option value="180">3 hrs</option><option value="240" selected>4 hrs</option><option value="300">5 hrs</option></select></div>
         </div>
       </div>
-
-      <!-- ZONE CONFIG -->
       <div class="card">
-        <div class="card-title">🗺 Zones & Minimum Cover</div>
-        <div id="zoneList" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div class="ct">👶 Under-18 Rules</div>
+        <div class="wb mb3">Staff marked Under 18 will be warned if their shift exceeds the max. The schedule still generates — you decide whether to adjust.</div>
+        <div class="fg"><div class="fl">Max Hours (Under 18)</div><select id="sU18M" onchange="saveCfg()"><option value="4">4 hours</option><option value="6">6 hours</option><option value="8" selected>8 hours</option></select></div>
       </div>
     </div>
-
-    <!-- DATA -->
     <div class="card">
-      <div class="card-title">💾 Data Management</div>
-      <div class="flex gap-3">
+      <div class="ct">💾 Data</div>
+      <div class="row gap3 wrap">
         <button class="btn" onclick="exportData()">⬇ Export JSON</button>
         <label class="btn" style="cursor:pointer">⬆ Import JSON<input type="file" accept=".json" style="display:none" onchange="importData(event)"></label>
-        <button class="btn btn-danger" onclick="hardReset()">🗑 Reset Everything</button>
+        <button class="btn btn-d" onclick="hardReset()">🗑 Reset Everything</button>
       </div>
     </div>
   </div>
+
 </main>
 
-<!-- ── EDIT MODAL ── -->
-<div class="overlay" id="editOverlay">
+<!-- EDIT STAFF MODAL -->
+<div class="ov" id="editOv">
+  <div class="modal w">
+    <div class="mt2">Edit Staff Member</div>
+    <input type="hidden" id="eId">
+    <div class="frow mb3">
+      <div class="fg"><div class="fl">Full Name</div><input type="text" id="eNm"></div>
+      <div class="fg" style="max-width:140px"><div class="fl">Role</div><input type="text" id="eRl"></div>
+    </div>
+    <div class="frow mb3">
+      <div class="fg"><div class="fl">Shift Start</div><input type="text" id="eSt" placeholder="9, 9:30, 9am"><div class="th">Type freely</div></div>
+      <div class="fg"><div class="fl">Shift End</div><input type="text" id="eEn" placeholder="17:30, 5pm"><div class="th">Type freely</div></div>
+    </div>
+    <div class="fg mb3"><div class="fl">Can Work At (empty = any shop)</div><div class="shop-checks" id="editSC"></div></div>
+    <div class="row gap4 wrap mb3">
+      <div class="trow"><label class="tog"><input type="checkbox" id="eBrk"><span class="tsl"></span></label><label class="fl" for="eBrk">☕ Gets a break</label></div>
+      <div class="trow"><label class="tog"><input type="checkbox" id="eBud"><span class="tsl"></span></label><label class="fl" for="eBud">🫂 Needs a buddy</label></div>
+      <div class="trow"><label class="tog"><input type="checkbox" id="eU18"><span class="tsl"></span></label><label class="fl" for="eU18">🌱 Under 18</label></div>
+    </div>
+    <div class="mft"><button class="btn" onclick="closeMod()">Cancel</button><button class="btn btn-p" onclick="saveEdit()">Save Changes</button></div>
+  </div>
+</div>
+
+<!-- EDIT SHOP MODAL -->
+<div class="ov" id="shopOv">
   <div class="modal">
-    <div class="modal-title">Edit Staff Member</div>
-    <input type="hidden" id="editId">
-    <div class="form-row mb-3">
-      <div class="form-group"><label>Full Name</label><input type="text" id="eName"></div>
-      <div class="form-group" style="max-width:150px"><label>Role</label><input type="text" id="eRole"></div>
+    <div class="mt2">Edit Shop</div>
+    <input type="hidden" id="shEId">
+    <div class="frow mb3">
+      <div class="fg"><div class="fl">Shop Name</div><input type="text" id="shENm"></div>
+      <div class="fg" style="max-width:90px"><div class="fl">Min Staff</div><input type="text" id="shEMn"></div>
+      <div class="fg" style="max-width:90px"><div class="fl">Max Staff</div><input type="text" id="shEMx"></div>
     </div>
-    <div class="form-row mb-3">
-      <div class="form-group"><label>Shift Start</label><input type="time" id="eStart"></div>
-      <div class="form-group"><label>Shift End</label><input type="time" id="eEnd"></div>
-    </div>
-    <div class="form-group mb-3"><label>Skills</label><div class="skills-grid" id="editSkills"></div></div>
-    <div class="modal-foot">
-      <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
-    </div>
+    <div class="mft"><button class="btn" onclick="closeMod()">Cancel</button><button class="btn btn-p" onclick="saveShopEdit()">Save</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CONSTANTS
-// ═══════════════════════════════════════════════════════
+  // ─────────────────────────────────────────────
+  // STATE
+  // ─────────────────────────────────────────────
+  const SCOLORS=['#F5A623','#3ECF8E','#60A5FA','#F472B6','#A78BFA','#FB923C','#34D399','#818CF8','#F87171','#FCD34D','#2DD4BF','#C084FC'];
+  const PCOLORS=['#4B7BFF','#FF6B6B','#FFB347','#47D7AC','#DA70D6','#66CDAA','#FF8C00','#87CEEB','#DDA0DD','#FFA07A','#C3A6FF'];
 
-const SKILLS = [
-  { id:'till',       label:'Till / Checkout', color:'#F59E0B' },
-  { id:'floor',      label:'Shop Floor',       color:'#38BDF8' },
-  { id:'stock',      label:'Stock Room',       color:'#A78BFA' },
-  { id:'fitting',    label:'Fitting Rooms',    color:'#34D399' },
-  { id:'service',    label:'Customer Svc',     color:'#FB7185' },
-  { id:'supervisor', label:'Supervisor',       color:'#FF8C42' },
-  { id:'delivery',   label:'Delivery',         color:'#F472B6' },
-];
+  let S={
+    shops:[],staff:[],sched:null,
+    cfg:{dayStart:'08:00',dayEnd:'21:00',brkLen:45,brkFrom:'11:00',brkTo:'15:00',brkMin:240,u18Max:8},
+    date:new Date().toISOString().split('T')[0],ci:0,pi:0
+  };
+  const LS='sb_v4';
+  function load(){try{const d=localStorage.getItem(LS);if(d)S={...S,...JSON.parse(d)};}catch(e){}}
+  function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
 
-const DEFAULT_ZONES = [
-  { id:'till',      name:'Checkout / Till',    color:'#F59E0B', minStaff:1, skills:['till','supervisor'],      priority:1 },
-  { id:'floor',     name:'Shop Floor',          color:'#38BDF8', minStaff:2, skills:['floor','supervisor'],     priority:2 },
-  { id:'fitting',   name:'Fitting Rooms',       color:'#34D399', minStaff:1, skills:['fitting','floor'],        priority:3 },
-  { id:'service',   name:'Customer Service',    color:'#FB7185', minStaff:1, skills:['service','supervisor'],   priority:4 },
-  { id:'stock',     name:'Stock Room',          color:'#A78BFA', minStaff:1, skills:['stock','delivery'],       priority:5 },
-  { id:'delivery',  name:'Delivery / Goods In', color:'#F472B6', minStaff:1, skills:['delivery','stock'],       priority:6 },
-];
-
-const PALETTE = [
-  '#4B7BFF','#FF6B6B','#FFB347','#47D7AC','#DA70D6',
-  '#66CDAA','#FF8C00','#87CEEB','#DDA0DD','#98FB98',
-  '#F0E68C','#ADD8E6','#FFA07A','#C3A6FF','#FFC0CB',
-];
-
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
-
-let state = {
-  staff: [],
-  zones: JSON.parse(JSON.stringify(DEFAULT_ZONES)),
-  schedule: null,
-  settings: {
-    dayStart: '08:00', dayEnd: '21:00',
-    breakLen: 45, breakFrom: '11:00', breakTo: '15:00', breakMin: 240,
-  },
-  date: new Date().toISOString().split('T')[0],
-  colorIdx: 0,
-};
-
-function load() {
-  try {
-    const s = localStorage.getItem('shiftboard_v2');
-    if (s) state = { ...state, ...JSON.parse(s) };
-  } catch(e) {}
-}
-
-function save() {
-  try { localStorage.setItem('shiftboard_v2', JSON.stringify(state)); } catch(e) {}
-}
-
-// ═══════════════════════════════════════════════════════
-// TIME UTILS
-// ═══════════════════════════════════════════════════════
-
-function toMin(t) { const [h,m] = t.split(':').map(Number); return h*60+m; }
-function toTime(m) { return `${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
-
-function slots(start, end) {
-  const out = []; let c = toMin(start); const e = toMin(end);
-  while (c < e) { out.push(toTime(c)); c += 30; }
-  return out;
-}
-
-function uid() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
-function nextColor() { return PALETTE[(state.colorIdx++) % PALETTE.length]; }
-
-// ═══════════════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════════════
-
-function toast(msg, type='ok') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = `toast ${type} show`;
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.className = 'toast', 2600);
-}
-
-// ═══════════════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════════════
-
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(`tab-${id}`).classList.add('active');
-  if (btn) btn.classList.add('active');
-  else document.querySelectorAll('.tab-btn').forEach(b => {
-    if (b.getAttribute('onclick').includes(id)) b.classList.add('active');
-  });
-}
-
-function onDateChange() {
-  state.date = document.getElementById('planDate').value;
-  save();
-}
-
-// ═══════════════════════════════════════════════════════
-// SKILLS UI
-// ═══════════════════════════════════════════════════════
-
-function renderSkillsGrid(id, selected=[]) {
-  document.getElementById(id).innerHTML = SKILLS.map(s => `
-    <label class="skill-chip ${selected.includes(s.id)?'on':''}" style="${selected.includes(s.id)?`color:${s.color}`:''}">
-      <input type="checkbox" value="${s.id}" ${selected.includes(s.id)?'checked':''} onchange="skillToggle(this,'${s.color}')">
-      <div class="skill-dot" style="background:${s.color}"></div>
-      <span>${s.label}</span>
-    </label>
-  `).join('');
-}
-
-function skillToggle(input, color) {
-  const chip = input.closest('.skill-chip');
-  if (input.checked) { chip.classList.add('on'); chip.style.color = color; }
-  else { chip.classList.remove('on'); chip.style.color = ''; }
-}
-
-function getSkills(id) {
-  return Array.from(document.querySelectorAll(`#${id} input:checked`)).map(i => i.value);
-}
-
-// ═══════════════════════════════════════════════════════
-// STAFF MANAGEMENT
-// ═══════════════════════════════════════════════════════
-
-function addStaff() {
-  const name = document.getElementById('nName').value.trim();
-  if (!name) { toast('Please enter a name', 'err'); return; }
-  const start = document.getElementById('nStart').value;
-  const end = document.getElementById('nEnd').value;
-  if (toMin(start) >= toMin(end)) { toast('End time must be after start', 'err'); return; }
-
-  state.staff.push({
-    id: uid(), name,
-    role: document.getElementById('nRole').value.trim(),
-    skills: getSkills('addSkills'),
-    start, end,
-    color: nextColor(),
-  });
-
-  save(); renderRoster(); updateStats();
-  document.getElementById('nName').value = '';
-  document.getElementById('nRole').value = '';
-  renderSkillsGrid('addSkills');
-  toast(`${name} added!`);
-}
-
-function removeStaff(id) {
-  state.staff = state.staff.filter(s => s.id !== id);
-  save(); renderRoster(); updateStats();
-}
-
-function clearAll() {
-  if (!confirm('Remove all staff members?')) return;
-  state.staff = []; state.schedule = null; state.colorIdx = 0;
-  save(); renderRoster(); updateStats();
-  toast('All staff cleared');
-}
-
-function openEdit(id) {
-  const s = state.staff.find(x => x.id === id); if (!s) return;
-  document.getElementById('editId').value = id;
-  document.getElementById('eName').value = s.name;
-  document.getElementById('eRole').value = s.role || '';
-  document.getElementById('eStart').value = s.start;
-  document.getElementById('eEnd').value = s.end;
-  renderSkillsGrid('editSkills', s.skills);
-  document.getElementById('editOverlay').classList.add('open');
-}
-
-function saveEdit() {
-  const id = document.getElementById('editId').value;
-  const s = state.staff.find(x => x.id === id); if (!s) return;
-  const name = document.getElementById('eName').value.trim();
-  if (!name) { toast('Name required','err'); return; }
-  s.name = name; s.role = document.getElementById('eRole').value.trim();
-  s.start = document.getElementById('eStart').value;
-  s.end = document.getElementById('eEnd').value;
-  s.skills = getSkills('editSkills');
-  save(); renderRoster(); closeModal();
-  toast('Staff updated!');
-}
-
-function closeModal() { document.getElementById('editOverlay').classList.remove('open'); }
-
-function renderRoster() {
-  const el = document.getElementById('rosterList');
-  if (!state.staff.length) {
-    el.innerHTML = `<div class="empty"><div class="ei">👤</div><h3>No Staff Added</h3><p>Import from file or add manually above.</p></div>`;
-    return;
+  // ─────────────────────────────────────────────
+  // TIME UTILS
+  // ─────────────────────────────────────────────
+  function pT(r){
+    if(!r)return null;
+    r=r.toString().trim().toLowerCase().replace(/\s/g,'');
+    let h,m=0;const pm=r.endsWith('pm'),am=r.endsWith('am');
+    r=r.replace(/(am|pm)$/,'');
+    if(r.includes(':'))[h,m]=r.split(':').map(Number);
+    else if(r.length<=2)h=+r;
+    else if(r.length===3){h=+r[0];m=+r.slice(1);}
+    else if(r.length===4){h=+r.slice(0,2);m=+r.slice(2);}
+    else return null;
+    if(isNaN(h)||isNaN(m))return null;
+    if(pm&&h<12)h+=12;if(am&&h===12)h=0;
+    if(h>23||m>59)return null;
+    return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
   }
-  el.innerHTML = `<div class="staff-list">${state.staff.map(s => {
-    const skillBadges = s.skills.map(sk => {
-      const skill = SKILLS.find(x => x.id === sk);
-      return skill ? `<span class="badge" style="border-color:${skill.color}30;color:${skill.color}">${skill.label}</span>` : '';
-    }).join('');
-    return `<div class="staff-item">
-      <div class="s-dot" style="background:${s.color}"></div>
-      <div class="s-name">${s.name}</div>
-      <div class="s-role">${s.role||'—'}</div>
-      <div class="s-skills">${skillBadges || '<span style="color:var(--text-dim);font-size:12px">No skills</span>'}</div>
-      <div class="s-time">${s.start} – ${s.end}</div>
-      <div class="s-actions">
-        <button class="btn btn-sm" onclick="openEdit('${s.id}')">✏ Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="removeStaff('${s.id}')">✕</button>
+  function toM(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+  function toT(m){return`${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
+  function mkSlots(s,e){const o=[];let c=toM(s);const en=toM(e);while(c<en){o.push(toT(c));c+=30;}return o;}
+  function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
+  function scCol(){return SCOLORS[S.ci++%SCOLORS.length];}
+  function stCol(){return PCOLORS[S.pi++%PCOLORS.length];}
+
+  // ─────────────────────────────────────────────
+  // UI HELPERS
+  // ─────────────────────────────────────────────
+  function toast(msg,t='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${t} show`;clearTimeout(el._t);el._t=setTimeout(()=>el.className='toast',2800);}
+  function sw(id,btn){document.querySelectorAll('.ts').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));document.getElementById(`ts-${id}`).classList.add('on');if(btn)btn.classList.add('on');}
+  function onDateCh(){S.date=document.getElementById('planDate').value;save();}
+  function closeMod(){document.querySelectorAll('.ov').forEach(o=>o.classList.remove('on'));}
+  function rT(id){const el=document.getElementById(id);const v=pT(el.value);if(!v)el.classList.add('ei');else el.classList.remove('ei');return v;}
+
+  // ─────────────────────────────────────────────
+  // SHOP CHECKS WIDGET
+  // ─────────────────────────────────────────────
+  function renderSC(cid,sel=[]){
+    const el=document.getElementById(cid);
+    if(!S.shops.length){el.innerHTML=`<span style="font-size:12px;color:var(--t2)">Add shops first on the Shops tab</span>`;return;}
+    el.innerHTML=S.shops.map(sh=>`
+    <label class="sc${sel.includes(sh.id)?' on':''}" style="${sel.includes(sh.id)?`color:${sh.color};border-color:${sh.color}40`:''}" >
+      <input type="checkbox" value="${sh.id}" ${sel.includes(sh.id)?'checked':''} onchange="scTog(this,'${sh.color}')">
+      <div class="sc-dot" style="background:${sh.color}"></div>
+      <span>${sh.name}</span>
+    </label>`).join('');
+  }
+  function scTog(inp,col){const c=inp.closest('.sc');if(inp.checked){c.classList.add('on');c.style.color=col;c.style.borderColor=col+'40';}else{c.classList.remove('on');c.style.color='';c.style.borderColor='';}}
+  function getSC(cid){return Array.from(document.querySelectorAll(`#${cid} input:checked`)).map(i=>i.value);}
+
+  // ─────────────────────────────────────────────
+  // SHOPS
+  // ─────────────────────────────────────────────
+  function addShop(){
+    const nm=document.getElementById('shNm').value.trim();
+    if(!nm){toast('Shop name required','err');return;}
+    const mn=Math.max(0,parseInt(document.getElementById('shMn').value)||1);
+    const mx=Math.max(mn,parseInt(document.getElementById('shMx').value)||3);
+    S.shops.push({id:uid(),name:nm,color:scCol(),minStaff:mn,maxStaff:mx,active:true});
+    document.getElementById('shNm').value='';
+    save();rShops();uShopStats();rSC('addSC',[]);
+    toast(`${nm} added!`);
+  }
+  function removeShop(id){
+    if(!confirm('Remove this shop? Staff assigned only to this shop will need updating.'))return;
+    S.shops=S.shops.filter(s=>s.id!==id);
+    S.staff.forEach(st=>{st.shops=(st.shops||[]).filter(x=>x!==id);});
+    save();rShops();uShopStats();rSC('addSC',[]);
+  }
+  function togShop(id){const sh=S.shops.find(x=>x.id===id);if(sh){sh.active=!sh.active;save();rShops();uShopStats();}}
+  function setAllShops(v){S.shops.forEach(s=>s.active=v);save();rShops();uShopStats();}
+  function openShopEdit(id){
+    const sh=S.shops.find(x=>x.id===id);if(!sh)return;
+    document.getElementById('shEId').value=id;
+    document.getElementById('shENm').value=sh.name;
+    document.getElementById('shEMn').value=sh.minStaff;
+    document.getElementById('shEMx').value=sh.maxStaff;
+    document.getElementById('shopOv').classList.add('on');
+  }
+  function saveShopEdit(){
+    const id=document.getElementById('shEId').value;
+    const sh=S.shops.find(x=>x.id===id);if(!sh)return;
+    const nm=document.getElementById('shENm').value.trim();if(!nm){toast('Name required','err');return;}
+    sh.name=nm;sh.minStaff=Math.max(0,parseInt(document.getElementById('shEMn').value)||1);
+    sh.maxStaff=Math.max(sh.minStaff,parseInt(document.getElementById('shEMx').value)||3);
+    save();closeMod();rShops();uShopStats();rSC('addSC',[]);toast('Shop updated!');
+  }
+  function rShops(){
+    const el=document.getElementById('shopList');
+    if(!S.shops.length){el.innerHTML=`<div class="empty"><div class="ei">🏪</div><h3>No Shops Yet</h3><p>Add locations above.</p></div>`;return;}
+    el.innerHTML=`<div class="shop-list">${S.shops.map(sh=>`
+    <div class="shi ${sh.active?'':'inact'}">
+      <div class="sh-sw" style="background:${sh.color}"></div>
+      <div class="sh-nm">${sh.name}</div>
+      <div class="sh-cp">min ${sh.minStaff} · max ${sh.maxStaff}</div>
+      <div class="row gap2">
+        <button class="btn btn-sm" onclick="togShop('${sh.id}')">${sh.active?'Disable':'Enable'}</button>
+        <button class="btn btn-sm" onclick="openShopEdit('${sh.id}')">✏</button>
+        <button class="btn btn-sm btn-d" onclick="removeShop('${sh.id}')">✕</button>
       </div>
+    </div>`).join('')}</div>`;
+  }
+  function uShopStats(){
+    const a=S.shops.filter(s=>s.active);
+    document.getElementById('shAct').textContent=a.length;
+    document.getElementById('shCap').textContent=a.reduce((t,s)=>t+s.maxStaff,0);
+    document.getElementById('shMinS').textContent=a.reduce((t,s)=>t+s.minStaff,0);
+  }
+
+  // ─────────────────────────────────────────────
+  // STAFF
+  // ─────────────────────────────────────────────
+  function addStaff(){
+    const nm=document.getElementById('nNm').value.trim();if(!nm){toast('Name required','err');return;}
+    const st=rT('nSt'),en=rT('nEn');if(!st||!en){toast('Check shift times','err');return;}
+    if(toM(st)>=toM(en)){toast('End must be after start','err');return;}
+    S.staff.push({id:uid(),name:nm,role:document.getElementById('nRl').value.trim(),shops:getSC('addSC'),start:st,end:en,hasBreak:document.getElementById('nBrk').checked,needsBuddy:document.getElementById('nBud').checked,under18:document.getElementById('nU18').checked,color:stCol()});
+    save();rStaff();uStaffStats();
+    ['nNm','nRl','nSt','nEn'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('nBrk').checked=true;
+    document.getElementById('nBud').checked=false;
+    document.getElementById('nU18').checked=false;
+    rSC('addSC',[]);
+    toast(`${nm} added!`);
+  }
+  function removeStaff(id){S.staff=S.staff.filter(s=>s.id!==id);save();rStaff();uStaffStats();}
+  function clearStaff(){if(!confirm('Remove all staff?'))return;S.staff=[];S.sched=null;S.pi=0;save();rStaff();uStaffStats();toast('Staff cleared');}
+  function openEdit(id){
+    const s=S.staff.find(x=>x.id===id);if(!s)return;
+    document.getElementById('eId').value=id;
+    document.getElementById('eNm').value=s.name;
+    document.getElementById('eRl').value=s.role||'';
+    document.getElementById('eSt').value=s.start;
+    document.getElementById('eEn').value=s.end;
+    document.getElementById('eBrk').checked=s.hasBreak!==false;
+    document.getElementById('eBud').checked=!!s.needsBuddy;
+    document.getElementById('eU18').checked=!!s.under18;
+    rSC('editSC',s.shops||[]);
+    document.getElementById('editOv').classList.add('on');
+  }
+  function saveEdit(){
+    const id=document.getElementById('eId').value;const s=S.staff.find(x=>x.id===id);if(!s)return;
+    const nm=document.getElementById('eNm').value.trim();if(!nm){toast('Name required','err');return;}
+    const st=rT('eSt'),en=rT('eEn');if(!st||!en){toast('Check shift times','err');return;}
+    if(toM(st)>=toM(en)){toast('End must be after start','err');return;}
+    s.name=nm;s.role=document.getElementById('eRl').value.trim();s.start=st;s.end=en;
+    s.shops=getSC('editSC');s.hasBreak=document.getElementById('eBrk').checked;
+    s.needsBuddy=document.getElementById('eBud').checked;s.under18=document.getElementById('eU18').checked;
+    save();rStaff();uStaffStats();closeMod();toast('Saved!');
+  }
+  function rStaff(){
+    const el=document.getElementById('staffList');
+    if(!S.staff.length){el.innerHTML=`<div class="empty"><div class="ei">👤</div><h3>No Staff Yet</h3></div>`;return;}
+    const sm=Object.fromEntries(S.shops.map(s=>[s.id,s]));
+    el.innerHTML=`<div class="staff-list">${S.staff.map(s=>{
+      const hrs=((toM(s.end)-toM(s.start))/60).toFixed(1);
+      const u18w=s.under18&&(toM(s.end)-toM(s.start))>S.cfg.u18Max*60;
+      const shTags=(s.shops||[]).map(id=>sm[id]).filter(Boolean).map(sh=>`<span class="tag" style="border-color:${sh.color}40;color:${sh.color}">${sh.name}</span>`).join('');
+      return`<div class="si ${s.needsBuddy?'bl':s.under18?'gl':''}">
+      <div class="sdot" style="background:${s.color}"></div>
+      <div class="snm">${s.name}</div>
+      <div class="srl">${s.role||'—'}</div>
+      <div class="stags">
+        ${shTags||'<span style="font-size:11px;color:var(--t2)">Any shop</span>'}
+        ${s.needsBuddy?'<span class="tag tg-buddy">🫂 Buddy</span>':''}
+        ${!s.hasBreak?'<span class="tag tg-nobrk">No Break</span>':''}
+        ${s.under18?`<span class="tag tg-u18">🌱 U18${u18w?' ⚠️':''}</span>`:''}
+      </div>
+      <div class="stm">${s.start}–${s.end} (${hrs}h)</div>
+      <div class="sact"><button class="btn btn-sm" onclick="openEdit('${s.id}')">✏</button><button class="btn btn-sm btn-d" onclick="removeStaff('${s.id}')">✕</button></div>
     </div>`;
-  }).join('')}</div>`;
-}
+    }).join('')}</div>`;
+  }
+  function uStaffStats(){
+    document.getElementById('stTot').textContent=S.staff.length;
+    document.getElementById('stBud').textContent=S.staff.filter(s=>s.needsBuddy).length;
+    document.getElementById('stU18').textContent=S.staff.filter(s=>s.under18).length;
+    document.getElementById('stNBrk').textContent=S.staff.filter(s=>!s.hasBreak).length;
+  }
 
-function updateStats() {
-  document.getElementById('sTotal').textContent = state.staff.length;
-  document.getElementById('sScheduled').textContent = state.schedule ? state.staff.length : 0;
-  document.getElementById('sZones').textContent = state.zones.filter(z => z.minStaff > 0).length;
-  const allSkills = new Set(state.staff.flatMap(s => s.skills));
-  document.getElementById('sSkills').textContent = allSkills.size;
-}
-
-// ═══════════════════════════════════════════════════════
-// IMPORT
-// ═══════════════════════════════════════════════════════
-
-function parseLines(text) {
-  let added = 0, skipped = 0;
-  text.split('\n').forEach(line => {
-    line = line.trim();
-    if (!line || line.startsWith('#')) return;
-    const parts = line.split('|').map(p => p.trim());
-    if (parts.length < 4) { skipped++; return; }
-    const [name, skillsRaw, startRaw, endRaw] = parts;
-    if (!name || !startRaw || !endRaw) { skipped++; return; }
-    const norm = t => { const [h,m]=t.trim().split(':'); return `${h.padStart(2,'0')}:${m}`; };
-    try {
-      const start = norm(startRaw), end = norm(endRaw);
-      if (toMin(start) >= toMin(end)) { skipped++; return; }
-      const validSkills = SKILLS.map(x => x.id);
-      const skills = skillsRaw.split(',').map(s => s.trim().toLowerCase()).filter(s => validSkills.includes(s));
-      if (state.staff.find(s => s.name.toLowerCase() === name.toLowerCase())) { skipped++; return; }
-      state.staff.push({ id:uid(), name, role:'', skills, start, end, color:nextColor() });
-      added++;
-    } catch(e) { skipped++; }
-  });
-  return { added, skipped };
-}
-
-function doImport() {
-  const { added, skipped } = parseLines(document.getElementById('importText').value);
-  if (added) { save(); renderRoster(); updateStats(); toast(`✅ Imported ${added} staff${skipped?` (${skipped} skipped)`:''}`); }
-  else toast('No valid staff found — check the format.', 'err');
-}
-
-function importFile(e) {
-  const f = e.target.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = ev => { document.getElementById('importText').value = ev.target.result; doImport(); };
-  r.readAsText(f); e.target.value = '';
-}
-
-function dlTemplate() {
-  const t = `# ShiftBoard Staff Import
-# =========================================
-# Format: Name | Skills | Start | End
-#
-# Available skills:
-#   till, floor, stock, fitting, service, supervisor, delivery
-#
-# Notes:
-#   - One staff member per line
-#   - Use | (pipe) to separate fields
-#   - Separate skills with commas
-#   - Times in 24-hour format (HH:MM)
-#   - Lines starting with # are ignored
-# =========================================
-
-Alice Johnson | till, floor, supervisor | 09:00 | 17:30
-Bob Smith     | stock, delivery         | 06:00 | 14:00
-Carol White   | floor, fitting, service | 10:00 | 18:00
-David Brown   | till, floor             | 12:00 | 20:00
-Emma Wilson   | supervisor, till, service | 08:00 | 16:00
-Frank Davies  | stock, floor            | 07:00 | 15:00
-Grace Taylor  | fitting, floor          | 11:00 | 19:00`;
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([t], {type:'text/plain'})),
-    download: 'shiftboard-staff-template.txt'
-  });
-  a.click(); URL.revokeObjectURL(a.href);
-  toast('Template downloaded!');
-}
-
-// ═══════════════════════════════════════════════════════
-// SCHEDULE GENERATION
-// ═══════════════════════════════════════════════════════
-
-function calcBreak(staff) {
-  const { settings } = state;
-  const shiftMin = toMin(staff.end) - toMin(staff.start);
-  if (shiftMin < settings.breakMin) return null;
-
-  const wFrom = toMin(settings.breakFrom);
-  const wTo = toMin(settings.breakTo);
-  const len = settings.breakLen;
-
-  // Ideal: midpoint of shift
-  let ideal = toMin(staff.start) + Math.round(shiftMin / 2);
-  // Round down to nearest 30-min slot
-  ideal = Math.floor(ideal / 30) * 30;
-
-  // Clamp to break window & ensure it fits in shift
-  let bStart = Math.max(ideal, Math.max(wFrom, toMin(staff.start) + 60));
-  bStart = Math.min(bStart, Math.min(wTo - len, toMin(staff.end) - len));
-  bStart = Math.floor(bStart / 30) * 30; // snap to slot
-
-  // Slots occupied (round 45min up to 2 slots = 60min for grid clarity)
-  const numSlots = Math.ceil(len / 30);
-  const occupied = [];
-  for (let i = 0; i < numSlots; i++) occupied.push(toTime(bStart + i * 30));
-
-  return {
-    slots: occupied,
-    startTime: toTime(bStart),
-    endTime: toTime(bStart + len),
-  };
-}
-
-function assignZones(workers) {
-  const result = {};
-  const taken = new Set();
-  const byPriority = [...state.zones].sort((a,b) => a.priority - b.priority);
-
-  // Pass 1: fill minimum coverage with skilled staff
-  byPriority.forEach(zone => {
-    if (!zone.minStaff) return;
-    const qualified = workers
-      .filter(s => !taken.has(s.id) && zone.skills.some(sk => s.skills.includes(sk)))
-      .sort((a,b) => {
-        // Prefer staff whose first skill matches the zone's primary skill
-        const aIdx = a.skills.findIndex(sk => zone.skills.includes(sk));
-        const bIdx = b.skills.findIndex(sk => zone.skills.includes(sk));
-        return (aIdx<0?99:aIdx) - (bIdx<0?99:bIdx);
-      })
-      .slice(0, zone.minStaff);
-    qualified.forEach(s => { result[s.id] = zone.id; taken.add(s.id); });
-  });
-
-  // Pass 2: assign remaining staff to best matching zone
-  workers.filter(s => !taken.has(s.id)).forEach(staff => {
-    let best = null, bestScore = -Infinity;
-    byPriority.forEach(zone => {
-      const matchIdx = staff.skills.findIndex(sk => zone.skills.includes(sk));
-      if (matchIdx >= 0) {
-        const score = (staff.skills.length - matchIdx) * 10 - zone.priority;
-        if (score > bestScore) { bestScore = score; best = zone; }
+  // ─────────────────────────────────────────────
+  // IMPORT
+  // ─────────────────────────────────────────────
+  function parseLines(txt){
+    let added=0,skipped=0;
+    txt.split('\n').forEach(ln=>{
+      ln=ln.trim();if(!ln||ln.startsWith('#'))return;
+      const p=ln.split('|').map(x=>x.trim());if(p.length<4){skipped++;return;}
+      const[nm,shRaw,sR,eR]=p;
+      if(!nm){skipped++;return;}
+      const st=pT(sR),en=pT(eR);
+      if(!st||!en||toM(st)>=toM(en)){skipped++;return;}
+      if(S.staff.find(s=>s.name.toLowerCase()===nm.toLowerCase())){skipped++;return;}
+      const brkR=(p[4]||'yes').toLowerCase();
+      const budR=(p[5]||'no').toLowerCase();
+      const u18R=(p[6]||'no').toLowerCase();
+      let shopIds=[];
+      const rawSh=(shRaw||'').trim().toLowerCase();
+      if(rawSh&&rawSh!=='any'){
+        rawSh.split(',').forEach(n=>{n=n.trim();const sh=S.shops.find(s=>s.name.toLowerCase()===n);if(sh)shopIds.push(sh.id);});
       }
+      S.staff.push({id:uid(),name:nm,role:'',shops:shopIds,start:st,end:en,
+        hasBreak:!['no','false','0'].includes(brkR),
+        needsBuddy:['yes','true','1'].includes(budR),
+        under18:['yes','true','1'].includes(u18R),
+        color:stCol()});
+      added++;
     });
-    if (!best) best = byPriority[0]; // fallback
-    result[staff.id] = best.id;
-    taken.add(staff.id);
-  });
+    return{added,skipped};
+  }
+  function doImport(){const{added,skipped}=parseLines(document.getElementById('impTxt').value);if(added){save();rStaff();uStaffStats();toast(`✅ Imported ${added}${skipped?` (${skipped} skipped)`:''} staff`);}else toast('No valid staff found — check the format','err');}
+  function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{document.getElementById('impTxt').value=ev.target.result;doImport();};r.readAsText(f);e.target.value='';}
+  function dlTpl(){
+    const t=`# ShiftBoard Staff Import Template
+# Format: Name | Shops | Start | End | Break | Buddy | Under18
+# Shops = comma-separated names (must match exactly), or 'any'
+# Times: 9, 9:30, 930, 9am, 17:30 all work
+# Break/Buddy/Under18: yes or no (defaults: yes, no, no)
+Alice Johnson | Shop A, Shop B | 9 | 17:30
+Bob Smith | Shop A | 8am | 2pm | no
+Carol White | any | 10 | 18 | yes | yes
+David Brown | Shop B | 9 | 17 | yes | no | yes`;
+    const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([t],{type:'text/plain'})),download:'shiftboard-template.txt'});
+    a.click();URL.revokeObjectURL(a.href);toast('Template downloaded!');
+  }
 
-  return result;
-}
+  // ─────────────────────────────────────────────
+  // SCHEDULE ALGORITHM
+  // ─────────────────────────────────────────────
+  function canWorkAt(staff,shopId){return!staff.shops||!staff.shops.length||staff.shops.includes(shopId);}
 
-function generateSchedule() {
-  if (!state.staff.length) { toast('Add staff first!', 'err'); return; }
+  function calcBreak(staff){
+    const{cfg}=S;const shiftM=toM(staff.end)-toM(staff.start);if(shiftM<cfg.brkMin)return null;
+    const wF=toM(cfg.brkFrom),wT=toM(cfg.brkTo),len=cfg.brkLen;
+    let bS=toM(staff.start)+Math.round(shiftM/2);
+    bS=Math.floor(bS/30)*30;
+    bS=Math.max(bS,Math.max(wF,toM(staff.start)+60));
+    bS=Math.min(bS,Math.min(wT-len,toM(staff.end)-len));
+    bS=Math.floor(bS/30)*30;
+    const numS=Math.ceil(len/30);const slots=[];
+    for(let i=0;i<numS;i++)slots.push(toT(bS+i*30));
+    return{slots,bStart:toT(bS),bEnd:toT(bS+len)};
+  }
 
-  const timeSlots = slots(state.settings.dayStart, state.settings.dayEnd);
-  const grid = {}; // grid[staffId][slot] = { type:'off'|'break'|'work', zoneId?, breakStart?, breakEnd? }
-  const breaks = {};
-
-  // Init + assign breaks
-  state.staff.forEach(s => {
-    grid[s.id] = {};
-    timeSlots.forEach(sl => { grid[s.id][sl] = { type:'off' }; });
-    const brk = calcBreak(s);
-    breaks[s.id] = brk;
-    if (brk) brk.slots.forEach(sl => {
-      if (grid[s.id][sl] !== undefined)
-        grid[s.id][sl] = { type:'break', breakStart:brk.startTime, breakEnd:brk.endTime };
+  function assignPrimary(staff,actShops){
+    const res={};const load=Object.fromEntries(actShops.map(s=>[s.id,0]));
+    const sorted=[...staff].sort((a,b)=>{
+      if(a.needsBuddy&&!b.needsBuddy)return-1;if(!a.needsBuddy&&b.needsBuddy)return 1;
+      const aS=(a.shops&&a.shops.length>0)?a.shops.length:999;
+      const bS=(b.shops&&b.shops.length>0)?b.shops.length:999;
+      return aS-bS;
     });
-  });
-
-  // Assign zones slot-by-slot
-  timeSlots.forEach(sl => {
-    const slMin = toMin(sl);
-    const working = state.staff.filter(s => {
-      const ss = toMin(s.start), se = toMin(s.end);
-      return slMin >= ss && slMin < se && grid[s.id][sl].type !== 'break';
+    sorted.forEach(st=>{
+      const elig=actShops.filter(sh=>canWorkAt(st,sh.id)&&load[sh.id]<sh.maxStaff);
+      const pool=elig.length?elig:actShops.filter(sh=>canWorkAt(st,sh.id));
+      if(!pool.length){res[st.id]=actShops[0]?.id;if(actShops[0])load[actShops[0].id]++;return;}
+      if(st.needsBuddy){const wp=pool.filter(sh=>load[sh.id]>0);if(wp.length){const b=wp.sort((a,b)=>a.minStaff-b.minStaff)[0];res[st.id]=b.id;load[b.id]++;return;}}
+      const best=pool.sort((a,b)=>(load[a.id]/(a.minStaff||1))-(load[b.id]/(b.minStaff||1)))[0];
+      res[st.id]=best.id;load[best.id]++;
     });
-    if (!working.length) return;
-    const assigned = assignZones(working);
-    Object.entries(assigned).forEach(([sid, zid]) => {
-      grid[sid][sl] = { type:'work', zoneId:zid };
+    return res;
+  }
+
+  function genSched(){
+    const actShops=S.shops.filter(s=>s.active);
+    if(!S.staff.length){toast('Add staff first!','err');return;}
+    if(!actShops.length){toast('Enable at least one shop!','err');return;}
+    const ts=mkSlots(S.cfg.dayStart,S.cfg.dayEnd);
+    // Breaks
+    const brkMap={};S.staff.forEach(s=>{brkMap[s.id]=(s.hasBreak!==false)?calcBreak(s):null;});
+    // Primary assignment
+    const prim=assignPrimary(S.staff,actShops);
+    // Build grid
+    const grid={};
+    S.staff.forEach(s=>{
+      grid[s.id]={};
+      ts.forEach(sl=>{
+        const slM=toM(sl);const inS=slM>=toM(s.start)&&slM<toM(s.end);
+        if(!inS)grid[s.id][sl]={t:'off'};
+        else if(brkMap[s.id]?.slots.includes(sl))grid[s.id][sl]={t:'brk',bStart:brkMap[s.id].bStart,bEnd:brkMap[s.id].bEnd};
+        else grid[s.id][sl]={t:'work',shopId:prim[s.id]||actShops[0].id,moved:false};
+      });
     });
-  });
+    const getW=(sl)=>S.staff.filter(s=>grid[s.id][sl]?.t==='work');
+    const cntAt=(sl,sid)=>getW(sl).filter(s=>grid[s.id][sl].shopId===sid).length;
+    // Fix coverage gaps — staff can move
+    ts.forEach(sl=>{
+      actShops.forEach(shop=>{
+        if(cntAt(sl,shop.id)>=shop.minStaff)return;
+        const need=shop.minStaff-cntAt(sl,shop.id);
+        for(let i=0;i<need;i++){
+          const cand=S.staff.find(s=>{
+            const c=grid[s.id][sl];if(c?.t!=='work'||c.shopId===shop.id)return false;
+            if(!canWorkAt(s,shop.id))return false;
+            const cur=actShops.find(sh=>sh.id===c.shopId);
+            return cur&&cntAt(sl,cur.id)>cur.minStaff;
+          });
+          if(cand)grid[cand.id][sl]={t:'work',shopId:shop.id,moved:true};
+        }
+      });
+    });
+    // Buddy enforcement
+    S.staff.filter(s=>s.needsBuddy).forEach(bs=>{
+      ts.forEach(sl=>{
+        const cell=grid[bs.id][sl];if(cell?.t!=='work')return;
+        const comps=getW(sl).filter(s=>s.id!==bs.id&&grid[s.id][sl].shopId===cell.shopId);
+        if(comps.length>0)return;
+        const cand=S.staff.find(s=>{
+          if(s.id===bs.id)return false;const c=grid[s.id][sl];
+          if(c?.t!=='work'||!canWorkAt(s,cell.shopId)||c.shopId===cell.shopId)return false;
+          const cur=actShops.find(sh=>sh.id===c.shopId);
+          return!cur||cntAt(sl,cur.id)>cur.minStaff;
+        })||S.staff.find(s=>{
+          if(s.id===bs.id)return false;const c=grid[s.id][sl];
+          return c?.t==='work'&&canWorkAt(s,cell.shopId)&&c.shopId!==cell.shopId;
+        });
+        if(cand)grid[cand.id][sl]={t:'work',shopId:cell.shopId,moved:true,bCover:true};
+        else cell.buddyAlert=true;
+      });
+    });
+    // Coverage map
+    const cov={};
+    actShops.forEach(sh=>{cov[sh.id]={};ts.forEach(sl=>{cov[sh.id][sl]=cntAt(sl,sh.id);});});
+    // Alerts
+    const alerts=[];
+    S.staff.filter(s=>s.under18).forEach(s=>{const hrs=(toM(s.end)-toM(s.start))/60;if(hrs>S.cfg.u18Max)alerts.push({type:'warn',msg:`⚠️ ${s.name} is Under 18 and working ${hrs.toFixed(1)}h (max ${S.cfg.u18Max}h)`});});
+    S.staff.filter(s=>s.needsBuddy).forEach(bs=>{const lone=ts.filter(sl=>grid[bs.id][sl]?.buddyAlert).length;if(lone)alerts.push({type:'err',msg:`🫂 ${bs.name} has ${lone} slot(s) without a companion — not enough qualified staff to cover`});});
+    actShops.forEach(sh=>{
+      const gaps=ts.filter(sl=>{const anyW=S.staff.some(s=>{const m=toM(sl);return m>=toM(s.start)&&m<toM(s.end);});return anyW&&cov[sh.id][sl]<sh.minStaff&&cov[sh.id][sl]>0;}).length;
+      if(gaps)alerts.push({type:'warn',msg:`⚡ ${sh.name}: below minimum (${sh.minStaff} person${sh.minStaff>1?'s':''}) for ${gaps} slot(s)`});
+    });
+    S.sched={slots:ts,grid,cov,alerts};
+    save();rGrid();rPrint();
+    if(alerts.length)toast(`Schedule ready — ${alerts.length} warning(s)`,'warn');
+    else toast('✅ Schedule generated!');
+  }
 
-  state.schedule = { slots: timeSlots, grid, breaks };
-  save(); updateStats();
-  renderGrid(); renderPrint();
-  toast('✅ Schedule generated!');
-}
-
-// ═══════════════════════════════════════════════════════
-// SCHEDULE GRID
-// ═══════════════════════════════════════════════════════
-
-function renderGrid() {
-  const el = document.getElementById('schedGrid');
-  if (!state.schedule) return;
-  const { slots: timeSlots, grid } = state.schedule;
-  const zMap = Object.fromEntries(state.zones.map(z => [z.id, z]));
-
-  // Legend
-  const usedZones = new Set();
-  state.staff.forEach(s => timeSlots.forEach(sl => {
-    const c = grid[s.id]?.[sl];
-    if (c?.type === 'work') usedZones.add(c.zoneId);
-  }));
-  document.getElementById('zoneLegend').innerHTML =
-    state.zones.filter(z => usedZones.has(z.id)).map(z =>
-      `<div class="leg-item"><div class="leg-dot" style="background:${z.color}"></div><span>${z.name}</span></div>`
-    ).join('') +
-    `<div class="leg-item"><div class="leg-dot" style="background:#4B5563"></div><span>Break</span></div>`;
-
-  // Header
-  const headCells = timeSlots.map(sl => {
-    const hr = sl.endsWith(':00');
-    return `<th class="th-time${hr?' hr':''}">${hr ? sl : '·'}</th>`;
-  }).join('');
-
-  // Rows
-  const rows = state.staff.map(s => {
-    const cells = timeSlots.map((sl, i) => {
-      const hr = sl.endsWith(':00');
-      const c = grid[s.id]?.[sl] || { type:'off' };
-      if (c.type === 'off') return `<td class="td-cell off${hr?' hr':''}"></td>`;
-      if (c.type === 'break') return `<td class="td-cell brk${hr?' hr':''}">☕<div class="tip">Break: ${c.breakStart}–${c.breakEnd}</div></td>`;
-      const z = zMap[c.zoneId];
-      if (!z) return `<td class="td-cell off${hr?' hr':''}"></td>`;
-      const label = z.name.split(' ')[0].slice(0,4).toUpperCase();
-      return `<td class="td-cell work${hr?' hr':''}" style="background:${z.color}22;border-left:3px solid ${z.color}"><span style="color:${z.color};font-size:8px">${label}</span><div class="tip">${z.name} · ${sl}</div></td>`;
+  // ─────────────────────────────────────────────
+  // OVERVIEW GRID
+  // ─────────────────────────────────────────────
+  function rGrid(){
+    const el=document.getElementById('schedGrid');const al=document.getElementById('alertArea');
+    if(!S.sched){el.innerHTML=`<div class="empty card"><div class="ei">📋</div><h3>No Schedule</h3></div>`;al.innerHTML='';return;}
+    const{slots:ts,grid,cov,alerts}=S.sched;
+    const sm=Object.fromEntries(S.shops.map(s=>[s.id,s]));
+    const actShops=S.shops.filter(s=>s.active);
+    // Alerts
+    al.innerHTML=alerts.map(a=>`<div class="aal ${a.type==='err'?'al-e':'al-w'}">${a.msg}</div>`).join('');
+    // Legend
+    document.getElementById('lgnd').innerHTML=
+            actShops.map(sh=>`<div class="li"><div class="ldot" style="background:${sh.color}"></div><span>${sh.name}</span></div>`).join('')+
+            `<div class="li"><div class="ldot" style="background:rgba(96,96,112,.3)"></div><span>Break</span></div>`+
+            `<div class="li"><div class="ldot" style="border:1px dashed rgba(255,255,255,.3);background:transparent"></div><span>Cover move</span></div>`;
+    const hC=ts.map(sl=>`<th class="th-tm${sl.endsWith(':00')?' hr':''}">${sl.endsWith(':00')?sl:'·'}</th>`).join('');
+    const rows=S.staff.map(s=>{
+      const ico=`${s.needsBuddy?'🫂':''}${s.under18?'🌱':''}`;
+      const cells=ts.map(sl=>{
+        const hr=sl.endsWith(':00');const c=grid[s.id]?.[sl]||{t:'off'};
+        if(c.t==='off')return`<td class="tc off${hr?' hr':''}"></td>`;
+        if(c.t==='brk')return`<td class="tc brk${hr?' hr':''}">☕<div class="tip">Break ${c.bStart}–${c.bEnd}</div></td>`;
+        const sh=sm[c.shopId];if(!sh)return`<td class="tc off${hr?' hr':''}"></td>`;
+        const lbl=sh.name.length>4?sh.name.slice(0,4).toUpperCase():sh.name.toUpperCase();
+        return`<td class="tc work${hr?' hr':''}${c.buddyAlert?' ba':''}${c.moved?' mvd':''}" style="background:${sh.color}1A;border-left:3px solid ${sh.color}"><span style="color:${sh.color};font-size:7px">${lbl}</span><div class="tip">${sh.name}${c.moved?' (cover)':''}${c.buddyAlert?' ⚠️ alone!':''} · ${sl}</div></td>`;
+      }).join('');
+      return`<tr><td class="td-n"><div class="td-ni"><div class="td-ndot" style="background:${s.color}"></div><div class="td-ntxt" title="${s.name}">${s.name}</div><span style="font-size:10px;margin-left:2px">${ico}</span></div></td>${cells}</tr>`;
     }).join('');
-    return `<tr>
-      <td class="td-name"><div class="td-name-inner"><div class="td-name-dot" style="background:${s.color}"></div><div class="td-name-text" title="${s.name}">${s.name}</div></div></td>
-      ${cells}
-    </tr>`;
-  }).join('');
+    const covRows=actShops.map(sh=>`<tr class="tr-cv">
+    <td class="cv-lb">${sh.name} (${sh.minStaff}–${sh.maxStaff})</td>
+    ${ts.map(sl=>{
+      const c=cov[sh.id]?.[sl]??0;const hr=sl.endsWith(':00');
+      const anyW=S.staff.some(s=>{const m=toM(sl);return m>=toM(s.start)&&m<toM(s.end);});
+      if(!anyW)return`<td class="${hr?'hr':''}"></td>`;
+      const cls=c===0?'cv-0':c<sh.minStaff?'cv-lo':'cv-ok';
+      return`<td class="${cls}${hr?' hr':''}">${c||'!'}</td>`;
+    }).join('')}
+  </tr>`).join('');
+    el.innerHTML=`<div class="gw"><table><thead><tr><th class="th-co">Staff · Coverage</th>${hC}</tr></thead><tbody>${rows}${covRows}</tbody></table></div>`;
+  }
 
-  el.innerHTML = `<div class="grid-wrap"><table>
-    <thead><tr><th class="th-corner">Staff</th>${headCells}</tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>`;
-}
-
-// ═══════════════════════════════════════════════════════
-// PRINT VIEW
-// ═══════════════════════════════════════════════════════
-
-function renderPrint() {
-  const el = document.getElementById('printArea');
-  if (!state.schedule) return;
-  const { slots: timeSlots, grid } = state.schedule;
-  const zMap = Object.fromEntries(state.zones.map(z => [z.id, z]));
-
-  const dateStr = (() => {
-    try { return new Date(state.date + 'T12:00:00').toLocaleDateString('en-GB', { weekday:'long', year:'numeric', month:'long', day:'numeric' }); }
-    catch(e) { return state.date; }
-  })();
-
-  const cards = state.staff.map(s => {
-    // Build merged time blocks
-    const blocks = [];
-    let cur = null;
-
-    timeSlots.forEach(sl => {
-      const slMin = toMin(sl);
-      if (slMin < toMin(s.start) || slMin >= toMin(s.end)) return;
-      const c = grid[s.id]?.[sl]; if (!c) return;
-
-      let lbl, color, bg;
-      if (c.type === 'break') {
-        lbl = `☕ Break (${c.breakStart} – ${c.breakEnd})`;
-        color = '#64748B'; bg = '#F8FAFC';
-      } else if (c.type === 'work') {
-        const z = zMap[c.zoneId];
-        if (!z) return;
-        lbl = z.name; color = z.color; bg = z.color + '18';
-      } else return;
-
-      if (cur && cur.lbl === lbl) { cur.end = toTime(toMin(sl) + 30); }
-      else { if (cur) blocks.push(cur); cur = { lbl, color, bg, start:sl, end:toTime(toMin(sl)+30) }; }
-    });
-    if (cur) blocks.push(cur);
-
-    const hrs = ((toMin(s.end) - toMin(s.start)) / 60).toFixed(1).replace('.0','');
-
-    return `<div class="pcard">
-      <div class="pcard-head">
-        <div>
-          <div class="pcard-name">
-            <div style="width:11px;height:11px;background:${s.color};border-radius:50%"></div>
-            ${s.name}
-          </div>
-          <div class="pcard-meta">${s.role||'Staff Member'} · ${s.skills.map(sk=>SKILLS.find(x=>x.id===sk)?.label||sk).join(', ')||'No skills assigned'}</div>
-        </div>
-        <div>
-          <div class="pcard-shift">${s.start} – ${s.end} (${hrs}h)</div>
-          <div class="pcard-date">${dateStr}</div>
-        </div>
+  // ─────────────────────────────────────────────
+  // INDIVIDUAL PRINT
+  // ─────────────────────────────────────────────
+  function rPrint(){
+    const el=document.getElementById('printArea');
+    if(!S.sched){el.innerHTML=`<div class="empty card"><div class="ei">🖨</div><h3>Nothing to Print</h3></div>`;return;}
+    const{slots:ts,grid}=S.sched;
+    const sm=Object.fromEntries(S.shops.map(s=>[s.id,s]));
+    const dateStr=new Date(S.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    const cards=S.staff.map(s=>{
+      const blocks=[];let cur=null;
+      ts.forEach(sl=>{
+        const slM=toM(sl);if(slM<toM(s.start)||slM>=toM(s.end))return;
+        const c=grid[s.id]?.[sl];if(!c)return;
+        let lbl,col,bg;
+        if(c.t==='brk'){lbl=`☕ Break (${c.bStart}–${c.bEnd})`;col='#64748B';bg='#F8FAFC';}
+        else if(c.t==='work'){const sh=sm[c.shopId];if(!sh)return;lbl=sh.name+(c.moved?' (cover)':'');col=sh.color;bg=sh.color+'18';}
+        else return;
+        if(cur&&cur.lbl===lbl)cur.end=toT(toM(sl)+30);
+        else{if(cur)blocks.push(cur);cur={lbl,col,bg,start:sl,end:toT(toM(sl)+30)};}
+      });
+      if(cur)blocks.push(cur);
+      const hrs=((toM(s.end)-toM(s.start))/60).toFixed(1).replace('.0','');
+      const u18w=s.under18&&(toM(s.end)-toM(s.start))>S.cfg.u18Max*60;
+      return`<div class="pc ${s.needsBuddy?'pc-b':s.under18?'pc-u':''}">
+      ${s.needsBuddy?'<div class="pcno">🫂 Must have someone with them at all times</div>':''}
+      ${u18w?`<div class="pcu">🌱 Under 18 — ${hrs}h shift (max allowed: ${S.cfg.u18Max}h)</div>`:''}
+      <div class="pch">
+        <div><div class="pcnm"><div style="width:9px;height:9px;background:${s.color};border-radius:50%"></div>${s.name}</div><div class="pcmt">${s.role||'Staff Member'}${s.under18?' · Under 18':''}</div></div>
+        <div><div class="pcsh">${s.start} – ${s.end} (${hrs}h)</div><div class="pcd">${dateStr}</div></div>
       </div>
-      <div class="pslots">
-        ${blocks.map(b => `<div class="pslot" style="background:${b.bg};border-left:3px solid ${b.color}">
-          <div class="pslot-time">${b.start} – ${b.end}</div>
-          <div class="pslot-zone" style="color:${b.color}">${b.lbl}</div>
-        </div>`).join('')}
-      </div>
+      <div class="pslots">${blocks.map(b=>`<div class="pslot" style="background:${b.bg};border-left:3px solid ${b.col}"><div class="pst">${b.start} – ${b.end}</div><div class="psz" style="color:${b.col}">${b.lbl}</div></div>`).join('')}</div>
     </div>`;
-  }).join('');
+    }).join('');
+    el.innerHTML=`<div class="print-grid">${cards}</div>`;
+  }
 
-  el.innerHTML = `<div class="print-grid">${cards}</div>`;
-}
+  // ─────────────────────────────────────────────
+  // SETTINGS
+  // ─────────────────────────────────────────────
+  function saveCfg(){S.cfg={dayStart:document.getElementById('sDayS').value,dayEnd:document.getElementById('sDayE').value,brkLen:+document.getElementById('sBrkL').value,brkFrom:document.getElementById('sBrkF').value,brkTo:document.getElementById('sBrkT').value,brkMin:+document.getElementById('sBrkM').value,u18Max:+document.getElementById('sU18M').value};save();}
+  function loadCfgUI(){const c=S.cfg;document.getElementById('sDayS').value=c.dayStart;document.getElementById('sDayE').value=c.dayEnd;document.getElementById('sBrkL').value=c.brkLen;document.getElementById('sBrkF').value=c.brkFrom;document.getElementById('sBrkT').value=c.brkTo;document.getElementById('sBrkM').value=c.brkMin;document.getElementById('sU18M').value=c.u18Max;}
+  function exportData(){const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})),download:`shiftboard-${S.date}.json`});a.click();URL.revokeObjectURL(a.href);toast('Exported!');}
+  function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);S={...S,...d};save();init();toast('Imported!');}catch{toast('Invalid file','err');}};r.readAsText(f);e.target.value='';}
+  function hardReset(){if(!confirm('Reset everything?'))return;localStorage.removeItem(LS);location.reload();}
 
-// ═══════════════════════════════════════════════════════
-// SETTINGS
-// ═══════════════════════════════════════════════════════
-
-function saveSettings() {
-  state.settings = {
-    dayStart: document.getElementById('sDayStart').value,
-    dayEnd: document.getElementById('sDayEnd').value,
-    breakLen: +document.getElementById('sBreakLen').value,
-    breakFrom: document.getElementById('sBreakFrom').value,
-    breakTo: document.getElementById('sBreakTo').value,
-    breakMin: +document.getElementById('sBreakMin').value,
-  };
-  save();
-}
-
-function renderZoneList() {
-  document.getElementById('zoneList').innerHTML = state.zones.map(z => `
-    <div class="zone-row">
-      <div class="zone-swatch" style="background:${z.color}"></div>
-      <div style="flex:1;font-weight:700;font-size:14px">${z.name}</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <label style="font-size:12px">Min staff:</label>
-        <input type="number" min="0" max="20" value="${z.minStaff}" style="width:52px;text-align:center" onchange="setZoneMin('${z.id}',+this.value)">
-      </div>
-      <div style="font-size:11px;color:var(--text-dim)">
-        ${z.skills.map(s=>SKILLS.find(x=>x.id===s)?.label||s).join(', ')}
-      </div>
-    </div>`).join('');
-}
-
-function setZoneMin(id, val) {
-  const z = state.zones.find(x => x.id === id);
-  if (z) { z.minStaff = val; save(); updateStats(); }
-}
-
-function loadSettingsUI() {
-  const { settings } = state;
-  document.getElementById('sDayStart').value = settings.dayStart;
-  document.getElementById('sDayEnd').value = settings.dayEnd;
-  document.getElementById('sBreakLen').value = settings.breakLen;
-  document.getElementById('sBreakFrom').value = settings.breakFrom;
-  document.getElementById('sBreakTo').value = settings.breakTo;
-  document.getElementById('sBreakMin').value = settings.breakMin;
-}
-
-// ═══════════════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════════════
-
-function exportData() {
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([JSON.stringify(state,null,2)], {type:'application/json'})),
-    download: `shiftboard-${state.date}.json`
-  });
-  a.click(); URL.revokeObjectURL(a.href);
-  toast('Exported!');
-}
-
-function importData(e) {
-  const f = e.target.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = ev => {
-    try {
-      const d = JSON.parse(ev.target.result);
-      state = { ...state, ...d };
-      save(); init();
-      toast('Data imported!');
-    } catch { toast('Invalid file', 'err'); }
-  };
-  r.readAsText(f); e.target.value = '';
-}
-
-function hardReset() {
-  if (!confirm('Reset everything? All staff and schedules will be deleted.')) return;
-  localStorage.removeItem('shiftboard_v2');
-  location.reload();
-}
-
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-
-function init() {
-  document.getElementById('planDate').value = state.date;
-  loadSettingsUI();
-  renderSkillsGrid('addSkills');
-  renderRoster();
-  renderZoneList();
-  updateStats();
-  if (state.schedule) { renderGrid(); renderPrint(); }
-}
-
-// Event listeners
-document.getElementById('editOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-// Bootstrap
-load(); init();
+  // ─────────────────────────────────────────────
+  // INIT
+  // ─────────────────────────────────────────────
+  function init(){
+    document.getElementById('planDate').value=S.date;
+    loadCfgUI();rShops();uShopStats();rSC('addSC',[]);rStaff();uStaffStats();
+    if(S.sched){rGrid();rPrint();}
+  }
+  document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeMod();}));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
+  load();init();
 </script>
 </body>
 </html>
