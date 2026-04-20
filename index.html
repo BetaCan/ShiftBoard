@@ -9,8 +9,8 @@
     :root{
       --bg:#0C0C0E;--s0:#111113;--s1:#18181C;--s2:#222228;--s3:#2E2E36;
       --t0:#F0F0F4;--t1:#A8A8B8;--t2:#606070;--t3:#3A3A48;
-      --acc:#F5A623;--acc2:rgba(245,166,35,0.15);--acc3:rgba(245,166,35,0.08);
-      --ok:#3ECF8E;--warn:#F5A623;--err:#F5506A;--buddy:#C084FC;
+      --acc:#F5A623;--acc3:rgba(245,166,35,0.08);
+      --ok:#3ECF8E;--warn:#F5A623;--err:#F5506A;--buddy:#C084FC;--float:#22D3EE;
       --r:7px;--rL:12px;
     }
     *{margin:0;padding:0;box-sizing:border-box}
@@ -32,6 +32,7 @@
     .ts{display:none}.ts.on{display:block}
     .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    .g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
     .mb2{margin-bottom:8px}.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}
     .row{display:flex}.aic{align-items:center}.jsb{justify-content:space-between}.wrap{flex-wrap:wrap}
     .gap2{gap:8px}.gap3{gap:12px}.gap4{gap:16px}
@@ -47,6 +48,9 @@
     .btn-g:hover{color:var(--t0);background:var(--s2);border-color:var(--s3)}
     .btn-d{color:var(--err)}
     .btn-d:hover{border-color:var(--err);background:rgba(245,80,106,.1)}
+    .btn-sick{color:var(--warn);border-color:rgba(245,166,35,.3)}
+    .btn-sick:hover{background:rgba(245,166,35,.1);border-color:var(--warn)}
+    .btn-sick.active{background:rgba(245,166,35,.15);border-color:var(--warn);color:var(--warn)}
     .frow{display:flex;gap:10px;flex-wrap:wrap}
     .fg{display:flex;flex-direction:column;gap:4px;flex:1;min-width:100px}
     .fl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t2)}
@@ -56,6 +60,7 @@
     textarea{font-family:'IBM Plex Mono',monospace;font-size:12px;resize:vertical;min-height:100px;line-height:1.7}
     select{cursor:pointer}
     .th{font-size:10px;color:var(--t2);margin-top:3px}
+    /* TOGGLES */
     .trow{display:flex;align-items:center;gap:9px}
     .trow .fl{font-size:12px;color:var(--t0);text-transform:none;letter-spacing:0;font-weight:600;cursor:pointer}
     .tog{position:relative;width:36px;height:20px;flex-shrink:0}
@@ -64,42 +69,54 @@
     .tsl:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:var(--t2);border-radius:50%;transition:.2s}
     .tog input:checked+.tsl{background:var(--acc)}
     .tog input:checked+.tsl:before{transform:translateX(16px);background:#000}
+    /* TAGS */
     .tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border:1px solid}
     .tg-buddy{background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.35);color:var(--buddy)}
     .tg-nobrk{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:var(--warn)}
     .tg-u18{background:rgba(62,207,142,.1);border-color:rgba(62,207,142,.3);color:var(--ok)}
-    .tg-shop{border-color:var(--s3);background:var(--s2)}
+    .tg-float{background:rgba(34,211,238,.1);border-color:rgba(34,211,238,.3);color:var(--float)}
+    .tg-sick{background:rgba(245,80,106,.12);border-color:rgba(245,80,106,.3);color:var(--err)}
+    /* STATS */
     .sbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
     .stat{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:7px 16px;display:flex;align-items:center;gap:9px}
     .sv{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--acc);line-height:1}
     .sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t2)}
+    /* INFO BOXES */
     .ib{background:var(--acc3);border:1px solid rgba(245,166,35,.2);border-radius:var(--r);padding:10px 13px;font-size:12px;color:#f5c86b;margin-bottom:12px;line-height:1.7}
     .ib code{font-family:'IBM Plex Mono',monospace;background:rgba(245,166,35,.18);padding:1px 5px;border-radius:3px;font-size:10px}
     .wb{background:rgba(245,80,106,.07);border:1px solid rgba(245,80,106,.2);border-radius:var(--r);padding:9px 13px;font-size:12px;color:#f57e8e;line-height:1.6}
+    /* SHOP LIST */
     .shop-list{display:flex;flex-direction:column;gap:6px}
-    .shi{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:10px 13px;display:flex;align-items:center;gap:11px;transition:border-color .15s}
+    .shi{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:10px 13px;display:flex;align-items:center;gap:11px;transition:border-color .15s;flex-wrap:wrap}
     .shi:hover{border-color:var(--t3)}
     .shi.inact{opacity:.45}
     .sh-sw{width:12px;height:12px;border-radius:3px;flex-shrink:0}
     .sh-nm{font-weight:700;font-size:13px;flex:1}
     .sh-cp{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t1);white-space:nowrap}
+    .sh-hrs{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--t2);white-space:nowrap}
+    /* STAFF LIST */
     .staff-list{display:flex;flex-direction:column;gap:6px}
     .si{background:var(--s0);border:1px solid var(--s3);border-radius:var(--r);padding:9px 13px;display:flex;align-items:center;gap:11px;transition:border-color .15s;flex-wrap:wrap}
     .si:hover{border-color:var(--t3)}
     .si.bl{border-left:3px solid var(--buddy)}
     .si.gl{border-left:3px solid var(--ok)}
+    .si.fl-line{border-left:3px solid var(--float)}
+    .si.absent-row{opacity:.5;background:rgba(245,80,106,.05);border-color:rgba(245,80,106,.2)}
+    .si.absent-row .snm{text-decoration:line-through;color:var(--t2)}
     .sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
     .snm{font-weight:700;font-size:13px;min-width:130px}
     .srl{color:var(--t1);font-size:12px;min-width:80px}
     .stags{display:flex;gap:4px;flex-wrap:wrap;flex:1}
     .stm{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--t1);white-space:nowrap}
     .sact{display:flex;gap:4px;flex-shrink:0}
+    /* SHOP CHECKS */
     .shop-checks{display:flex;flex-wrap:wrap;gap:6px}
     .sc{display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 10px;border-radius:var(--r);border:1px solid var(--s3);background:var(--s0);transition:.15s;user-select:none}
     .sc.on{background:rgba(255,255,255,.04)}
     .sc input{display:none}
     .sc-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
     .sc span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+    /* GRID */
     .gw{overflow:auto;border-radius:var(--rL);border:1px solid var(--s3);max-height:72vh}
     .gw table{border-collapse:collapse;min-width:max-content}
     .gw th,.gw td{border-right:1px solid var(--s3);border-bottom:1px solid var(--s3)}
@@ -110,6 +127,7 @@
     .tr-cv td{background:var(--s0);height:26px;font-family:'IBM Plex Mono',monospace;font-size:10px;text-align:center;vertical-align:middle}
     .cv-lb{position:sticky;left:0;background:var(--s0);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);padding:0 13px;text-align:left;white-space:nowrap;z-index:10}
     .cv-ok{color:var(--ok)}.cv-lo{color:var(--warn)}.cv-0{background:rgba(245,80,106,.15)!important;color:var(--err);font-weight:700}
+    .cv-closed{color:var(--t3)!important;background:rgba(0,0,0,.2)!important}
     .td-n{background:var(--s0);position:sticky;left:0;z-index:10;padding:0 13px;height:40px;min-width:200px;white-space:nowrap}
     .td-ni{display:flex;align-items:center;gap:7px}
     .td-ndot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -119,20 +137,25 @@
     .tc.off{background:transparent}
     .tc.brk{background:rgba(96,96,112,.2);color:#606070}
     .tc.work{color:rgba(255,255,255,.8)}
+    .tc.float-cell{opacity:.8;border-style:dashed!important}
     .tc.mvd{outline:1px dashed rgba(255,255,255,.25);outline-offset:-2px}
     .tc.ba{outline:2px solid var(--buddy);outline-offset:-2px}
     .tc:hover .tip{opacity:1}
     .tip{position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#050507;border:1px solid var(--s3);color:var(--t0);padding:4px 8px;border-radius:5px;font-family:'Manrope',sans-serif;font-size:11px;white-space:nowrap;opacity:0;transition:.12s;z-index:60;pointer-events:none}
+    /* LEGEND */
     .lgnd{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
     .li{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t1)}
     .ldot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+    /* ALERTS */
     .aal{border-radius:var(--r);padding:7px 12px;font-size:12px;margin-bottom:5px;display:flex;align-items:center;gap:8px}
     .al-e{background:rgba(245,80,106,.1);border:1px solid rgba(245,80,106,.25);color:#f57e8e}
     .al-w{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);color:#f5c86b}
+    /* PRINT CARDS */
     .print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
     .pc{background:#fff;color:#0F172A;border:2px solid #E2E8F0;border-radius:10px;padding:16px;page-break-inside:avoid}
     .pc.pc-b{border-left:5px solid #9333EA}
     .pc.pc-u{border-left:5px solid #16A34A}
+    .pc.pc-f{border-left:5px solid #06B6D4}
     .pch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid #E2E8F0}
     .pcnm{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#0F172A;display:flex;align-items:center;gap:7px}
     .pcmt{font-size:11px;color:#64748B;margin-top:3px}
@@ -140,10 +163,12 @@
     .pcd{font-size:10px;color:#94A3B8;margin-top:2px}
     .pcno{background:#F3E8FF;border:1px solid #D8B4FE;border-radius:5px;padding:6px 10px;font-size:11px;color:#7E22CE;font-weight:700;margin-bottom:10px}
     .pcu{background:#DCFCE7;border:1px solid #86EFAC;border-radius:5px;padding:6px 10px;font-size:11px;color:#15803D;font-weight:700;margin-bottom:10px}
+    .pcf{background:#ECFEFF;border:1px solid #A5F3FC;border-radius:5px;padding:6px 10px;font-size:11px;color:#0E7490;font-weight:700;margin-bottom:10px}
     .pslots{display:flex;flex-direction:column;gap:3px}
     .pslot{display:flex;align-items:center;gap:9px;padding:5px 9px;border-radius:5px}
     .pst{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#64748B;width:88px;flex-shrink:0}
     .psz{font-weight:700;font-size:12px}
+    /* EMPTY + MODAL + TOAST */
     .empty{text-align:center;padding:44px 20px;color:var(--t2)}
     .empty .ei{font-size:40px;margin-bottom:8px}
     .empty h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--t1);margin-bottom:5px}
@@ -151,7 +176,7 @@
     .ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center}
     .ov.on{display:flex}
     .modal{background:var(--s1);border:1px solid var(--t3);border-radius:var(--rL);padding:24px;width:520px;max-width:calc(100vw - 28px);max-height:88vh;overflow-y:auto}
-    .modal.w{width:600px}
+    .modal.w{width:620px}
     .mt2{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:16px}
     .mft{display:flex;gap:7px;justify-content:flex-end;margin-top:16px;padding-top:12px;border-top:1px solid var(--s3)}
     hr{border:none;border-top:1px solid var(--s3);margin:14px 0}
@@ -163,8 +188,20 @@
     ::-webkit-scrollbar{width:5px;height:5px}
     ::-webkit-scrollbar-track{background:var(--s0)}
     ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
-    @media print{body{background:#fff;color:#000}header,.no-print{display:none!important}main{padding:0}}
-    @media(max-width:768px){.g2,.g3{grid-template-columns:1fr}.srl,.stags{display:none}}
+    @media print{
+      body{background:#fff;color:#000}
+      header,.no-print{display:none!important}
+      main{padding:0}
+      #alertArea{display:none!important}
+      .gw{max-height:none!important;overflow:visible!important;border:none!important}
+      .th-co,.th-tm,.td-n{position:static!important}
+      .tc{width:38px!important;height:24px!important}
+      .th-tm{width:38px!important}
+      .gw table{font-size:7px}
+      .pc{border-color:#CBD5E1!important}
+      .print-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+    }
+    @media(max-width:768px){.g2,.g3,.g4{grid-template-columns:1fr}.srl,.stags{display:none}}
   </style>
 </head>
 <body>
@@ -185,7 +222,7 @@
 </header>
 <main>
 
-  <!-- SHOPS -->
+  <!-- ═══════ SHOPS ═══════ -->
   <div id="ts-shops" class="ts on">
     <div class="sbar">
       <div class="stat"><div class="sv" id="shAct">0</div><div class="sl">Active Shops</div></div>
@@ -197,14 +234,18 @@
         <div class="ct">➕ Add Shop</div>
         <div class="frow mb3">
           <div class="fg"><div class="fl">Shop Name *</div><input type="text" id="shNm" placeholder="e.g. Westfield, High Street…"></div>
-          <div class="fg" style="max-width:88px"><div class="fl">Min Staff</div><input type="text" id="shMn" value="1"></div>
-          <div class="fg" style="max-width:88px"><div class="fl">Max Staff</div><input type="text" id="shMx" value="3"></div>
+          <div class="fg" style="max-width:80px"><div class="fl">Min Staff</div><input type="text" id="shMn" value="1"></div>
+          <div class="fg" style="max-width:80px"><div class="fl">Max Staff</div><input type="text" id="shMx" value="3"></div>
+        </div>
+        <div class="frow mb3">
+          <div class="fg"><div class="fl">Opens (optional)</div><input type="time" id="shOpen" placeholder="09:00"><div class="th">Leave blank = open all day</div></div>
+          <div class="fg"><div class="fl">Closes (optional)</div><input type="time" id="shClose" placeholder="18:00"><div class="th">Leave blank = open all day</div></div>
         </div>
         <button class="btn btn-p" onclick="addShop()">Add Shop</button>
       </div>
       <div class="card">
         <div class="ct">ℹ️ Daily Setup</div>
-        <div class="ib" style="margin-bottom:0">Add all your shops here. Each day <strong>toggle shops on/off</strong> and adjust min/max to match what's open. Staff are then matched to shops they're qualified for — coverage is checked every 30 min across the whole day including during breaks.</div>
+        <div class="ib" style="margin-bottom:0">Add all your locations. Each day <strong>toggle shops on/off</strong> and adjust min/max to match what's open. You can also set per-shop opening hours — staff won't be assigned to a closed shop and coverage rows will show it as closed.</div>
       </div>
     </div>
     <div class="card">
@@ -216,25 +257,25 @@
     </div>
   </div>
 
-  <!-- STAFF -->
+  <!-- ═══════ STAFF ═══════ -->
   <div id="ts-staff" class="ts">
     <div class="sbar">
       <div class="stat"><div class="sv" id="stTot">0</div><div class="sl">Staff</div></div>
       <div class="stat"><div class="sv" id="stBud">0</div><div class="sl">Need Buddy</div></div>
-      <div class="stat"><div class="sv" id="stU18">0</div><div class="sl">Under 18</div></div>
-      <div class="stat"><div class="sv" id="stNBrk">0</div><div class="sl">No Break</div></div>
+      <div class="stat"><div class="sv" id="stFlt">0</div><div class="sl">Floaters</div></div>
+      <div class="stat"><div class="sv" id="stAbs">0</div><div class="sl">Absent Today</div></div>
     </div>
     <div class="g2 mb4">
       <div class="card">
         <div class="ct">📥 Bulk Import</div>
         <div class="ib">
-          <strong>Format:</strong> <code>Name | Shops | Start | End | Break | Buddy | Under18</code><br>
-          Last 3 optional — defaults: break <code>yes</code>, buddy <code>no</code>, under18 <code>no</code><br>
-          Times: <code>9</code> <code>9:30</code> <code>930</code> <code>9am</code> <code>17:30</code> all work<br>
-          Shops = comma-separated names (must match exactly). Use <code>any</code> or leave blank for all shops.
+          <strong>Format:</strong> <code>Name | Shops | Start | End | Break | Buddy | Under18 | Floater</code><br>
+          Last 4 optional — defaults: break <code>yes</code>, buddy/under18/floater <code>no</code><br>
+          Times: <code>9</code> <code>9:30</code> <code>9am</code> <code>17:30</code> all work<br>
+          Shops = comma-separated names. Use <code>any</code> or leave blank for all. For floaters, these are the shops they rotate through.
         </div>
         <div class="fg mb3"><div class="fl">Paste or upload staff data</div>
-          <textarea id="impTxt" placeholder="Alice | Shop A, Shop B | 9 | 17:30&#10;Bob | Shop A | 8am | 2pm | no&#10;Carol | any | 10 | 18 | yes | yes&#10;David | Shop B | 9 | 17 | yes | no | yes"></textarea>
+          <textarea id="impTxt" placeholder="Alice | Shop A, Shop B | 9 | 17:30&#10;Bob | Shop A | 8am | 2pm | no&#10;Carol | any | 10 | 18 | yes | yes&#10;Flo | Shop A, Shop B, Shop C | 9 | 17 | yes | no | no | yes"></textarea>
         </div>
         <div class="row gap3 aic wrap">
           <button class="btn btn-p" onclick="doImport()">⚡ Import</button>
@@ -250,14 +291,18 @@
           <div class="fg" style="max-width:130px"><div class="fl">Role (optional)</div><input type="text" id="nRl" autocomplete="off" placeholder="e.g. Team Lead"></div>
         </div>
         <div class="frow mb3">
-          <div class="fg"><div class="fl">Shift Start</div><input type="text" id="nSt" placeholder="9, 9:30, 9am, 09:00"><div class="th">Type freely — any format works</div></div>
-          <div class="fg"><div class="fl">Shift End</div><input type="text" id="nEn" placeholder="17:30, 5pm, 1730"><div class="th">Type freely — any format works</div></div>
+          <div class="fg"><div class="fl">Shift Start</div><input type="text" id="nSt" placeholder="9, 9:30, 9am, 09:00"><div class="th">Type freely — any format</div></div>
+          <div class="fg"><div class="fl">Shift End</div><input type="text" id="nEn" placeholder="17:30, 5pm, 1730"><div class="th">Type freely — any format</div></div>
         </div>
-        <div class="fg mb3"><div class="fl">Can Work At (leave empty = any shop)</div><div class="shop-checks" id="addSC"></div></div>
+        <div class="fg mb3">
+          <div class="fl" id="addShopLbl">Can Work At (empty = any shop)</div>
+          <div class="shop-checks" id="addSC"></div>
+        </div>
         <div class="row gap4 wrap mb3">
           <div class="trow"><label class="tog"><input type="checkbox" id="nBrk" checked><span class="tsl"></span></label><label class="fl" for="nBrk">☕ Gets a break</label></div>
-          <div class="trow"><label class="tog"><input type="checkbox" id="nBud"><span class="tsl"></span></label><label class="fl" for="nBud">🫂 Needs a buddy</label></div>
+          <div class="trow"><label class="tog"><input type="checkbox" id="nBud"><span class="tsl"></span></label><label class="fl" for="nBud">🫂 Needs buddy</label></div>
           <div class="trow"><label class="tog"><input type="checkbox" id="nU18"><span class="tsl"></span></label><label class="fl" for="nU18">🌱 Under 18</label></div>
+          <div class="trow"><label class="tog"><input type="checkbox" id="nFlt" onchange="updateShopLbl('add')"><span class="tsl"></span></label><label class="fl" for="nFlt">🔄 Floater</label></div>
         </div>
         <button class="btn btn-p" onclick="addStaff()">Add Staff Member</button>
       </div>
@@ -268,17 +313,20 @@
     </div>
   </div>
 
-  <!-- OVERVIEW -->
+  <!-- ═══════ OVERVIEW ═══════ -->
   <div id="ts-sched" class="ts">
     <div class="row jsb aic mb4 no-print wrap gap3">
       <div class="row aic gap4 wrap"><div class="st">📋 Daily Overview</div><div class="lgnd" id="lgnd"></div></div>
-      <button class="btn btn-p" onclick="genSched()">⚡ Generate Schedule</button>
+      <div class="row gap2">
+        <button class="btn" onclick="window.print()">🖨 Print Overview</button>
+        <button class="btn btn-p" onclick="genSched()">⚡ Generate Schedule</button>
+      </div>
     </div>
     <div id="alertArea" class="mb3"></div>
     <div id="schedGrid"><div class="empty card"><div class="ei">📋</div><h3>No Schedule</h3><p>Add shops &amp; staff, then click Generate Schedule.</p></div></div>
   </div>
 
-  <!-- INDIVIDUAL -->
+  <!-- ═══════ INDIVIDUAL ═══════ -->
   <div id="ts-print" class="ts">
     <div class="row jsb aic mb4 no-print">
       <div class="st">🖨 Individual Schedules</div>
@@ -287,7 +335,7 @@
     <div id="printArea"><div class="empty card"><div class="ei">🖨</div><h3>Nothing to Print</h3><p>Generate a schedule first.</p></div></div>
   </div>
 
-  <!-- SETTINGS -->
+  <!-- ═══════ SETTINGS ═══════ -->
   <div id="ts-cfg" class="ts">
     <div class="g2 mb4">
       <div class="card">
@@ -295,19 +343,43 @@
         <div class="g3 mb3">
           <div class="fg"><div class="fl">Day Start</div><input type="time" id="sDayS" value="08:00" onchange="saveCfg()"></div>
           <div class="fg"><div class="fl">Day End</div><input type="time" id="sDayE" value="21:00" onchange="saveCfg()"></div>
-          <div class="fg"><div class="fl">Break Length</div><select id="sBrkL" onchange="saveCfg()"><option value="30">30 min</option><option value="45" selected>45 min</option><option value="60">60 min</option></select></div>
+          <div class="fg"><div class="fl">Break Length</div>
+            <select id="sBrkL" onchange="saveCfg()">
+              <option value="30">30 min</option>
+              <option value="45" selected>45 min</option>
+              <option value="60">60 min</option>
+            </select>
+          </div>
         </div>
         <div class="g3">
           <div class="fg"><div class="fl">Earliest Break</div><input type="time" id="sBrkF" value="11:00" onchange="saveCfg()"></div>
           <div class="fg"><div class="fl">Latest Break End</div><input type="time" id="sBrkT" value="15:00" onchange="saveCfg()"></div>
-          <div class="fg"><div class="fl">Min Shift for Break</div><select id="sBrkM" onchange="saveCfg()"><option value="180">3 hrs</option><option value="240" selected>4 hrs</option><option value="300">5 hrs</option></select></div>
+          <div class="fg"><div class="fl">Min Shift for Break</div>
+            <select id="sBrkM" onchange="saveCfg()">
+              <option value="180">3 hrs</option>
+              <option value="240" selected>4 hrs</option>
+              <option value="300">5 hrs</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="card">
-        <div class="ct">👶 Under-18 Rules</div>
-        <div class="wb mb3">Staff marked Under 18 will be warned if their shift exceeds the max. The schedule still generates — you decide whether to adjust.</div>
-        <div class="fg"><div class="fl">Max Hours (Under 18)</div><select id="sU18M" onchange="saveCfg()"><option value="4">4 hours</option><option value="6">6 hours</option><option value="8" selected>8 hours</option></select></div>
+        <div class="ct">🔄 Floater Settings</div>
+        <div class="ib" style="margin-bottom:12px">Floaters rotate between their assigned shops throughout the day. They do <strong>not</strong> count toward any shop's min or max capacity — they're supplementary support.</div>
+        <div class="fg">
+          <div class="fl">Time per shop per visit</div>
+          <select id="sFltBlk" onchange="saveCfg()">
+            <option value="2">1 hour (2 slots)</option>
+            <option value="3" selected>1.5 hours (3 slots)</option>
+            <option value="4">2 hours (4 slots)</option>
+            <option value="6">3 hours (6 slots)</option>
+          </select>
+        </div>
       </div>
+    </div>
+    <div class="card mb4">
+      <div class="ct">👶 Under-18 Rules</div>
+      <div class="wb">Staff marked Under 18 are warned if their shift exceeds <strong>8 hours</strong> (the legal maximum). The schedule still generates — you decide whether to adjust their hours.</div>
     </div>
     <div class="card">
       <div class="ct">💾 Data</div>
@@ -334,11 +406,15 @@
       <div class="fg"><div class="fl">Shift Start</div><input type="text" id="eSt" placeholder="9, 9:30, 9am"><div class="th">Type freely</div></div>
       <div class="fg"><div class="fl">Shift End</div><input type="text" id="eEn" placeholder="17:30, 5pm"><div class="th">Type freely</div></div>
     </div>
-    <div class="fg mb3"><div class="fl">Can Work At (empty = any shop)</div><div class="shop-checks" id="editSC"></div></div>
+    <div class="fg mb3">
+      <div class="fl" id="editShopLbl">Can Work At (empty = any shop)</div>
+      <div class="shop-checks" id="editSC"></div>
+    </div>
     <div class="row gap4 wrap mb3">
       <div class="trow"><label class="tog"><input type="checkbox" id="eBrk"><span class="tsl"></span></label><label class="fl" for="eBrk">☕ Gets a break</label></div>
-      <div class="trow"><label class="tog"><input type="checkbox" id="eBud"><span class="tsl"></span></label><label class="fl" for="eBud">🫂 Needs a buddy</label></div>
+      <div class="trow"><label class="tog"><input type="checkbox" id="eBud"><span class="tsl"></span></label><label class="fl" for="eBud">🫂 Needs buddy</label></div>
       <div class="trow"><label class="tog"><input type="checkbox" id="eU18"><span class="tsl"></span></label><label class="fl" for="eU18">🌱 Under 18</label></div>
+      <div class="trow"><label class="tog"><input type="checkbox" id="eFlt" onchange="updateShopLbl('edit')"><span class="tsl"></span></label><label class="fl" for="eFlt">🔄 Floater</label></div>
     </div>
     <div class="mft"><button class="btn" onclick="closeMod()">Cancel</button><button class="btn btn-p" onclick="saveEdit()">Save Changes</button></div>
   </div>
@@ -351,8 +427,12 @@
     <input type="hidden" id="shEId">
     <div class="frow mb3">
       <div class="fg"><div class="fl">Shop Name</div><input type="text" id="shENm"></div>
-      <div class="fg" style="max-width:90px"><div class="fl">Min Staff</div><input type="text" id="shEMn"></div>
-      <div class="fg" style="max-width:90px"><div class="fl">Max Staff</div><input type="text" id="shEMx"></div>
+      <div class="fg" style="max-width:80px"><div class="fl">Min Staff</div><input type="text" id="shEMn"></div>
+      <div class="fg" style="max-width:80px"><div class="fl">Max Staff</div><input type="text" id="shEMx"></div>
+    </div>
+    <div class="frow mb3">
+      <div class="fg"><div class="fl">Opens (blank = all day)</div><input type="time" id="shEOpen"></div>
+      <div class="fg"><div class="fl">Closes (blank = all day)</div><input type="time" id="shEClose"></div>
     </div>
     <div class="mft"><button class="btn" onclick="closeMod()">Cancel</button><button class="btn btn-p" onclick="saveShopEdit()">Save</button></div>
   </div>
@@ -361,33 +441,37 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // STATE
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   const SCOLORS=['#F5A623','#3ECF8E','#60A5FA','#F472B6','#A78BFA','#FB923C','#34D399','#818CF8','#F87171','#FCD34D','#2DD4BF','#C084FC'];
   const PCOLORS=['#4B7BFF','#FF6B6B','#FFB347','#47D7AC','#DA70D6','#66CDAA','#FF8C00','#87CEEB','#DDA0DD','#FFA07A','#C3A6FF'];
 
   let S={
-    shops:[],staff:[],sched:null,
-    cfg:{dayStart:'08:00',dayEnd:'21:00',brkLen:45,brkFrom:'11:00',brkTo:'15:00',brkMin:240,u18Max:8},
-    date:new Date().toISOString().split('T')[0],ci:0,pi:0
+    shops:[],  // {id,name,color,minStaff,maxStaff,active,shopOpen?,shopClose?}
+    staff:[],  // {id,name,role,shops[],start,end,hasBreak,needsBuddy,under18,isFloater,absent,color}
+    sched:null,
+    cfg:{dayStart:'08:00',dayEnd:'21:00',brkLen:45,brkFrom:'11:00',brkTo:'15:00',brkMin:240,floatBlock:3},
+    date:new Date().toISOString().split('T')[0],
+    ci:0,pi:0
   };
-  const LS='sb_v4';
+  const LS='sb_v5';
   function load(){try{const d=localStorage.getItem(LS);if(d)S={...S,...JSON.parse(d)};}catch(e){}}
   function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // TIME UTILS
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function pT(r){
     if(!r)return null;
     r=r.toString().trim().toLowerCase().replace(/\s/g,'');
-    let h,m=0;const pm=r.endsWith('pm'),am=r.endsWith('am');
+    let h,m=0;
+    const pm=r.endsWith('pm'),am=r.endsWith('am');
     r=r.replace(/(am|pm)$/,'');
     if(r.includes(':'))[h,m]=r.split(':').map(Number);
-    else if(r.length<=2)h=+r;
-    else if(r.length===3){h=+r[0];m=+r.slice(1);}
-    else if(r.length===4){h=+r.slice(0,2);m=+r.slice(2);}
+    else if(r.length<=2)h += r;
+    else if(r.length===3){h += r[0];m += r.slice(1);}
+    else if(r.length===4){h += r.slice(0,2);m += r.slice(2);}
     else return null;
     if(isNaN(h)||isNaN(m))return null;
     if(pm&&h<12)h+=12;if(am&&h===12)h=0;
@@ -401,23 +485,37 @@
   function scCol(){return SCOLORS[S.ci++%SCOLORS.length];}
   function stCol(){return PCOLORS[S.pi++%PCOLORS.length];}
 
-  // ─────────────────────────────────────────────
+  function shopIsOpen(shop,sl){
+    if(!shop.shopOpen&&!shop.shopClose)return true;
+    const m=toM(sl);
+    const o=shop.shopOpen?toM(shop.shopOpen):0;
+    const c=shop.shopClose?toM(shop.shopClose):24*60;
+    return m>=o&&m<c;
+  }
+
+  // ═══════════════════════════════════════════════
   // UI HELPERS
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function toast(msg,t='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${t} show`;clearTimeout(el._t);el._t=setTimeout(()=>el.className='toast',2800);}
   function sw(id,btn){document.querySelectorAll('.ts').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));document.getElementById(`ts-${id}`).classList.add('on');if(btn)btn.classList.add('on');}
   function onDateCh(){S.date=document.getElementById('planDate').value;save();}
   function closeMod(){document.querySelectorAll('.ov').forEach(o=>o.classList.remove('on'));}
   function rT(id){const el=document.getElementById(id);const v=pT(el.value);if(!v)el.classList.add('ei');else el.classList.remove('ei');return v;}
 
-  // ─────────────────────────────────────────────
+  function updateShopLbl(prefix){
+    const isFloat=document.getElementById(prefix==='add'?'nFlt':'eFlt').checked;
+    const lbl=document.getElementById(prefix==='add'?'addShopLbl':'editShopLbl');
+    lbl.textContent=isFloat?'Rotates Through (shops to visit)':'Can Work At (empty = any shop)';
+  }
+
+  // ═══════════════════════════════════════════════
   // SHOP CHECKS WIDGET
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function renderSC(cid,sel=[]){
     const el=document.getElementById(cid);
     if(!S.shops.length){el.innerHTML=`<span style="font-size:12px;color:var(--t2)">Add shops first on the Shops tab</span>`;return;}
     el.innerHTML=S.shops.map(sh=>`
-    <label class="sc${sel.includes(sh.id)?' on':''}" style="${sel.includes(sh.id)?`color:${sh.color};border-color:${sh.color}40`:''}" >
+    <label class="sc${sel.includes(sh.id)?' on':''}" style="${sel.includes(sh.id)?`color:${sh.color};border-color:${sh.color}40`:''}">
       <input type="checkbox" value="${sh.id}" ${sel.includes(sh.id)?'checked':''} onchange="scTog(this,'${sh.color}')">
       <div class="sc-dot" style="background:${sh.color}"></div>
       <span>${sh.name}</span>
@@ -426,21 +524,25 @@
   function scTog(inp,col){const c=inp.closest('.sc');if(inp.checked){c.classList.add('on');c.style.color=col;c.style.borderColor=col+'40';}else{c.classList.remove('on');c.style.color='';c.style.borderColor='';}}
   function getSC(cid){return Array.from(document.querySelectorAll(`#${cid} input:checked`)).map(i=>i.value);}
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // SHOPS
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function addShop(){
     const nm=document.getElementById('shNm').value.trim();
     if(!nm){toast('Shop name required','err');return;}
     const mn=Math.max(0,parseInt(document.getElementById('shMn').value)||1);
     const mx=Math.max(mn,parseInt(document.getElementById('shMx').value)||3);
-    S.shops.push({id:uid(),name:nm,color:scCol(),minStaff:mn,maxStaff:mx,active:true});
+    const op=document.getElementById('shOpen').value||null;
+    const cl=document.getElementById('shClose').value||null;
+    S.shops.push({id:uid(),name:nm,color:scCol(),minStaff:mn,maxStaff:mx,active:true,shopOpen:op,shopClose:cl});
     document.getElementById('shNm').value='';
+    document.getElementById('shOpen').value='';
+    document.getElementById('shClose').value='';
     save();rShops();uShopStats();renderSC('addSC',[]);
     toast(`${nm} added!`);
   }
   function removeShop(id){
-    if(!confirm('Remove this shop? Staff assigned only to this shop will need updating.'))return;
+    if(!confirm('Remove this shop?'))return;
     S.shops=S.shops.filter(s=>s.id!==id);
     S.staff.forEach(st=>{st.shops=(st.shops||[]).filter(x=>x!==id);});
     save();rShops();uShopStats();renderSC('addSC',[]);
@@ -453,30 +555,38 @@
     document.getElementById('shENm').value=sh.name;
     document.getElementById('shEMn').value=sh.minStaff;
     document.getElementById('shEMx').value=sh.maxStaff;
+    document.getElementById('shEOpen').value=sh.shopOpen||'';
+    document.getElementById('shEClose').value=sh.shopClose||'';
     document.getElementById('shopOv').classList.add('on');
   }
   function saveShopEdit(){
     const id=document.getElementById('shEId').value;
     const sh=S.shops.find(x=>x.id===id);if(!sh)return;
     const nm=document.getElementById('shENm').value.trim();if(!nm){toast('Name required','err');return;}
-    sh.name=nm;sh.minStaff=Math.max(0,parseInt(document.getElementById('shEMn').value)||1);
+    sh.name=nm;
+    sh.minStaff=Math.max(0,parseInt(document.getElementById('shEMn').value)||1);
     sh.maxStaff=Math.max(sh.minStaff,parseInt(document.getElementById('shEMx').value)||3);
+    sh.shopOpen=document.getElementById('shEOpen').value||null;
+    sh.shopClose=document.getElementById('shEClose').value||null;
     save();closeMod();rShops();uShopStats();renderSC('addSC',[]);toast('Shop updated!');
   }
   function rShops(){
     const el=document.getElementById('shopList');
     if(!S.shops.length){el.innerHTML=`<div class="empty"><div class="ei">🏪</div><h3>No Shops Yet</h3><p>Add locations above.</p></div>`;return;}
-    el.innerHTML=`<div class="shop-list">${S.shops.map(sh=>`
-    <div class="shi ${sh.active?'':'inact'}">
+    el.innerHTML=`<div class="shop-list">${S.shops.map(sh=>{
+      const hrsStr=(sh.shopOpen&&sh.shopClose)?`${sh.shopOpen}–${sh.shopClose}`:(sh.shopOpen?`from ${sh.shopOpen}`:(sh.shopClose?`until ${sh.shopClose}`:'All day'));
+      return`<div class="shi ${sh.active?'':'inact'}">
       <div class="sh-sw" style="background:${sh.color}"></div>
       <div class="sh-nm">${sh.name}</div>
+      <div class="sh-hrs">🕐 ${hrsStr}</div>
       <div class="sh-cp">min ${sh.minStaff} · max ${sh.maxStaff}</div>
       <div class="row gap2">
         <button class="btn btn-sm" onclick="togShop('${sh.id}')">${sh.active?'Disable':'Enable'}</button>
         <button class="btn btn-sm" onclick="openShopEdit('${sh.id}')">✏</button>
         <button class="btn btn-sm btn-d" onclick="removeShop('${sh.id}')">✕</button>
       </div>
-    </div>`).join('')}</div>`;
+    </div>`;
+    }).join('')}</div>`;
   }
   function uShopStats(){
     const a=S.shops.filter(s=>s.active);
@@ -485,24 +595,40 @@
     document.getElementById('shMinS').textContent=a.reduce((t,s)=>t+s.minStaff,0);
   }
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // STAFF
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function addStaff(){
     const nm=document.getElementById('nNm').value.trim();if(!nm){toast('Name required','err');return;}
     const st=rT('nSt'),en=rT('nEn');if(!st||!en){toast('Check shift times','err');return;}
     if(toM(st)>=toM(en)){toast('End must be after start','err');return;}
-    S.staff.push({id:uid(),name:nm,role:document.getElementById('nRl').value.trim(),shops:getSC('addSC'),start:st,end:en,hasBreak:document.getElementById('nBrk').checked,needsBuddy:document.getElementById('nBud').checked,under18:document.getElementById('nU18').checked,color:stCol()});
+    S.staff.push({
+      id:uid(),name:nm,role:document.getElementById('nRl').value.trim(),
+      shops:getSC('addSC'),start:st,end:en,
+      hasBreak:document.getElementById('nBrk').checked,
+      needsBuddy:document.getElementById('nBud').checked,
+      under18:document.getElementById('nU18').checked,
+      isFloater:document.getElementById('nFlt').checked,
+      absent:false,color:stCol()
+    });
     save();rStaff();uStaffStats();
     ['nNm','nRl','nSt','nEn'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('nBrk').checked=true;
     document.getElementById('nBud').checked=false;
     document.getElementById('nU18').checked=false;
+    document.getElementById('nFlt').checked=false;
+    document.getElementById('addShopLbl').textContent='Can Work At (empty = any shop)';
     renderSC('addSC',[]);
     toast(`${nm} added!`);
   }
   function removeStaff(id){S.staff=S.staff.filter(s=>s.id!==id);save();rStaff();uStaffStats();}
   function clearStaff(){if(!confirm('Remove all staff?'))return;S.staff=[];S.sched=null;S.pi=0;save();rStaff();uStaffStats();toast('Staff cleared');}
+  function toggleAbsent(id){
+    const s=S.staff.find(x=>x.id===id);if(!s)return;
+    s.absent=!s.absent;
+    save();rStaff();uStaffStats();
+    toast(s.absent?`${s.name} marked absent`:`${s.name} back on shift`);
+  }
   function openEdit(id){
     const s=S.staff.find(x=>x.id===id);if(!s)return;
     document.getElementById('eId').value=id;
@@ -513,6 +639,8 @@
     document.getElementById('eBrk').checked=s.hasBreak!==false;
     document.getElementById('eBud').checked=!!s.needsBuddy;
     document.getElementById('eU18').checked=!!s.under18;
+    document.getElementById('eFlt').checked=!!s.isFloater;
+    document.getElementById('editShopLbl').textContent=s.isFloater?'Rotates Through (shops to visit)':'Can Work At (empty = any shop)';
     renderSC('editSC',s.shops||[]);
     document.getElementById('editOv').classList.add('on');
   }
@@ -524,6 +652,7 @@
     s.name=nm;s.role=document.getElementById('eRl').value.trim();s.start=st;s.end=en;
     s.shops=getSC('editSC');s.hasBreak=document.getElementById('eBrk').checked;
     s.needsBuddy=document.getElementById('eBud').checked;s.under18=document.getElementById('eU18').checked;
+    s.isFloater=document.getElementById('eFlt').checked;
     save();rStaff();uStaffStats();closeMod();toast('Saved!');
   }
   function rStaff(){
@@ -532,97 +661,146 @@
     const sm=Object.fromEntries(S.shops.map(s=>[s.id,s]));
     el.innerHTML=`<div class="staff-list">${S.staff.map(s=>{
       const hrs=((toM(s.end)-toM(s.start))/60).toFixed(1);
-      const u18w=s.under18&&(toM(s.end)-toM(s.start))>S.cfg.u18Max*60;
+      const u18w=s.under18&&(toM(s.end)-toM(s.start))>8*60;
       const shTags=(s.shops||[]).map(id=>sm[id]).filter(Boolean).map(sh=>`<span class="tag" style="border-color:${sh.color}40;color:${sh.color}">${sh.name}</span>`).join('');
-      return`<div class="si ${s.needsBuddy?'bl':s.under18?'gl':''}">
+      const lineClass=s.absent?'absent-row':(s.isFloater?'fl-line':(s.needsBuddy?'bl':s.under18?'gl':''));
+      return`<div class="si ${lineClass}">
       <div class="sdot" style="background:${s.color}"></div>
       <div class="snm">${s.name}</div>
       <div class="srl">${s.role||'—'}</div>
       <div class="stags">
-        ${shTags||'<span style="font-size:11px;color:var(--t2)">Any shop</span>'}
+        ${shTags||`<span style="font-size:11px;color:var(--t2)">${s.isFloater?'Rotates all':'Any shop'}</span>`}
+        ${s.isFloater?'<span class="tag tg-float">🔄 Floater</span>':''}
         ${s.needsBuddy?'<span class="tag tg-buddy">🫂 Buddy</span>':''}
         ${!s.hasBreak?'<span class="tag tg-nobrk">No Break</span>':''}
         ${s.under18?`<span class="tag tg-u18">🌱 U18${u18w?' ⚠️':''}</span>`:''}
+        ${s.absent?'<span class="tag tg-sick">🤒 ABSENT</span>':''}
       </div>
       <div class="stm">${s.start}–${s.end} (${hrs}h)</div>
-      <div class="sact"><button class="btn btn-sm" onclick="openEdit('${s.id}')">✏</button><button class="btn btn-sm btn-d" onclick="removeStaff('${s.id}')">✕</button></div>
+      <div class="sact">
+        <button class="btn btn-sm btn-sick ${s.absent?'active':''}" onclick="toggleAbsent('${s.id}')" title="${s.absent?'Mark as back on shift':'Mark as sick/absent today'}">${s.absent?'✓ Absent':'🤒 Sick'}</button>
+        <button class="btn btn-sm" onclick="openEdit('${s.id}')">✏</button>
+        <button class="btn btn-sm btn-d" onclick="removeStaff('${s.id}')">✕</button>
+      </div>
     </div>`;
     }).join('')}</div>`;
   }
   function uStaffStats(){
+    const active=S.staff.filter(s=>!s.absent);
     document.getElementById('stTot').textContent=S.staff.length;
-    document.getElementById('stBud').textContent=S.staff.filter(s=>s.needsBuddy).length;
-    document.getElementById('stU18').textContent=S.staff.filter(s=>s.under18).length;
-    document.getElementById('stNBrk').textContent=S.staff.filter(s=>!s.hasBreak).length;
+    document.getElementById('stBud').textContent=active.filter(s=>s.needsBuddy).length;
+    document.getElementById('stFlt').textContent=active.filter(s=>s.isFloater).length;
+    document.getElementById('stAbs').textContent=S.staff.filter(s=>s.absent).length;
   }
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // IMPORT
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function parseLines(txt){
     let added=0,skipped=0;
     txt.split('\n').forEach(ln=>{
       ln=ln.trim();if(!ln||ln.startsWith('#'))return;
       const p=ln.split('|').map(x=>x.trim());if(p.length<4){skipped++;return;}
-      const[nm,shRaw,sR,eR]=p;
-      if(!nm){skipped++;return;}
+      const[nm,shRaw,sR,eR]=p;if(!nm){skipped++;return;}
       const st=pT(sR),en=pT(eR);
       if(!st||!en||toM(st)>=toM(en)){skipped++;return;}
       if(S.staff.find(s=>s.name.toLowerCase()===nm.toLowerCase())){skipped++;return;}
       const brkR=(p[4]||'yes').toLowerCase();
       const budR=(p[5]||'no').toLowerCase();
       const u18R=(p[6]||'no').toLowerCase();
+      const fltR=(p[7]||'no').toLowerCase();
       let shopIds=[];
       const rawSh=(shRaw||'').trim().toLowerCase();
-      if(rawSh&&rawSh!=='any'){
-        rawSh.split(',').forEach(n=>{n=n.trim();const sh=S.shops.find(s=>s.name.toLowerCase()===n);if(sh)shopIds.push(sh.id);});
-      }
-      S.staff.push({id:uid(),name:nm,role:'',shops:shopIds,start:st,end:en,
+      if(rawSh&&rawSh!=='any'){rawSh.split(',').forEach(n=>{n=n.trim();const sh=S.shops.find(s=>s.name.toLowerCase()===n);if(sh)shopIds.push(sh.id);});}
+      S.staff.push({
+        id:uid(),name:nm,role:'',shops:shopIds,start:st,end:en,
         hasBreak:!['no','false','0'].includes(brkR),
         needsBuddy:['yes','true','1'].includes(budR),
         under18:['yes','true','1'].includes(u18R),
-        color:stCol()});
+        isFloater:['yes','true','1'].includes(fltR),
+        absent:false,color:stCol()
+      });
       added++;
     });
     return{added,skipped};
   }
-  function doImport(){const{added,skipped}=parseLines(document.getElementById('impTxt').value);if(added){save();rStaff();uStaffStats();toast(`✅ Imported ${added}${skipped?` (${skipped} skipped)`:''} staff`);}else toast('No valid staff found — check the format','err');}
+  function doImport(){const{added,skipped}=parseLines(document.getElementById('impTxt').value);if(added){save();rStaff();uStaffStats();toast(`✅ Imported ${added}${skipped?` (${skipped} skipped)`:''} staff`);}else toast('No valid staff found','err');}
   function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{document.getElementById('impTxt').value=ev.target.result;doImport();};r.readAsText(f);e.target.value='';}
   function dlTpl(){
     const t=`# ShiftBoard Staff Import Template
-# Format: Name | Shops | Start | End | Break | Buddy | Under18
-# Shops = comma-separated names (must match exactly), or 'any'
+# Format: Name | Shops | Start | End | Break | Buddy | Under18 | Floater
+# Shops: comma-separated names (must match exactly), or 'any'
 # Times: 9, 9:30, 930, 9am, 17:30 all work
-# Break/Buddy/Under18: yes or no (defaults: yes, no, no)
+# Break/Buddy/Under18/Floater: yes or no (defaults: yes, no, no, no)
+# Floaters rotate between their assigned shops — they don't count toward min/max
 Alice Johnson | Shop A, Shop B | 9 | 17:30
 Bob Smith | Shop A | 8am | 2pm | no
 Carol White | any | 10 | 18 | yes | yes
-David Brown | Shop B | 9 | 17 | yes | no | yes`;
+David Brown | Shop B | 9 | 17 | yes | no | yes
+Flo Patel | Shop A, Shop B, Shop C | 9 | 17 | yes | no | no | yes`;
     const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([t],{type:'text/plain'})),download:'shiftboard-template.txt'});
     a.click();URL.revokeObjectURL(a.href);toast('Template downloaded!');
   }
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // SCHEDULE ALGORITHM
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function canWorkAt(staff,shopId){return!staff.shops||!staff.shops.length||staff.shops.includes(shopId);}
 
-  function calcBreak(staff){
-    const{cfg}=S;const shiftM=toM(staff.end)-toM(staff.start);if(shiftM<cfg.brkMin)return null;
-    const wF=toM(cfg.brkFrom),wT=toM(cfg.brkTo),len=cfg.brkLen;
-    let bS=toM(staff.start)+Math.round(shiftM/2);
-    bS=Math.floor(bS/30)*30;
-    bS=Math.max(bS,Math.max(wF,toM(staff.start)+60));
-    bS=Math.min(bS,Math.min(wT-len,toM(staff.end)-len));
-    bS=Math.floor(bS/30)*30;
-    const numS=Math.ceil(len/30);const slots=[];
-    for(let i=0;i<numS;i++)slots.push(toT(bS+i*30));
-    return{slots,bStart:toT(bS),bEnd:toT(bS+len)};
+  // Staggered break calculation — picks the least-congested window
+  function calcBreak(staff,brkCount){
+    const{cfg}=S;
+    const shiftM=toM(staff.end)-toM(staff.start);
+    if(shiftM<cfg.brkMin)return null;
+    const len=cfg.brkLen;
+    const numS=Math.ceil(len/30);
+    const earliest=Math.max(toM(cfg.brkFrom),toM(staff.start)+60);
+    const latest=Math.min(toM(cfg.brkTo)-len,toM(staff.end)-len);
+    if(earliest>latest)return null;
+
+    let bestStart=null,bestScore=Infinity;
+    for(let bS=Math.floor(earliest/30)*30;bS<=Math.floor(latest/30)*30;bS+=30){
+      let score=0;
+      for(let i=0;i<numS;i++){score+=(brkCount[toT(bS+i*30)]||0);}
+      if(score<bestScore){bestScore=score;bestStart=bS;}
+    }
+    if(bestStart===null)return null;
+    const slots=[];
+    for(let i=0;i<numS;i++){
+      const sl=toT(bestStart+i*30);
+      slots.push(sl);
+      brkCount[sl]=(brkCount[sl]||0)+1;
+    }
+    return{slots,bStart:toT(bestStart),bEnd:toT(bestStart+len)};
   }
 
-  function assignPrimary(staff,actShops){
+  // Floater rotation through shops
+  function calcFloaterRotation(floater,actShops,brkSlots,allTs){
+    const shops=actShops.filter(sh=>canWorkAt(floater,sh.id));
+    if(!shops.length)return{};
+    const block=S.cfg.floatBlock||3;
+    const res={};
+    let shopIdx=0,slotsInBlock=0;
+    allTs.forEach(sl=>{
+      const slM=toM(sl);
+      if(slM<toM(floater.start)||slM>=toM(floater.end))return;
+      if(brkSlots.includes(sl))return;
+      // Advance to next shop that is open
+      let tries=0;
+      while(tries<shops.length&&!shopIsOpen(shops[shopIdx%shops.length],sl)){
+        shopIdx++;slotsInBlock=0;tries++;
+      }
+      const sh=shops[shopIdx%shops.length];
+      res[sl]=sh.id;
+      slotsInBlock++;
+      if(slotsInBlock>=block){shopIdx++;slotsInBlock=0;}
+    });
+    return res;
+  }
+
+  function assignPrimary(regularStaff,actShops){
     const res={};const load=Object.fromEntries(actShops.map(s=>[s.id,0]));
-    const sorted=[...staff].sort((a,b)=>{
+    const sorted=[...regularStaff].sort((a,b)=>{
       if(a.needsBuddy&&!b.needsBuddy)return-1;if(!a.needsBuddy&&b.needsBuddy)return 1;
       const aS=(a.shops&&a.shops.length>0)?a.shops.length:999;
       const bS=(b.shops&&b.shops.length>0)?b.shops.length:999;
@@ -641,33 +819,74 @@ David Brown | Shop B | 9 | 17 | yes | no | yes`;
 
   function genSched(){
     const actShops=S.shops.filter(s=>s.active);
-    if(!S.staff.length){toast('Add staff first!','err');return;}
+    const activeStaff=S.staff.filter(s=>!s.absent);
+    if(!activeStaff.length){toast('No active staff (everyone is absent?)','err');return;}
     if(!actShops.length){toast('Enable at least one shop!','err');return;}
-    const ts=mkSlots(S.cfg.dayStart,S.cfg.dayEnd);
-    // Breaks
-    const brkMap={};S.staff.forEach(s=>{brkMap[s.id]=(s.hasBreak!==false)?calcBreak(s):null;});
-    // Primary assignment
-    const prim=assignPrimary(S.staff,actShops);
+
+    const allTs=mkSlots(S.cfg.dayStart,S.cfg.dayEnd);
+
+    // Separate floaters from regular staff
+    const regularStaff=activeStaff.filter(s=>!s.isFloater);
+    const floaters=activeStaff.filter(s=>s.isFloater);
+
+    // Staggered breaks — shared counter across all staff
+    const brkCount={};
+
+    // Calculate breaks for regular staff first
+    const brkMap={};
+    regularStaff.forEach(s=>{brkMap[s.id]=(s.hasBreak!==false)?calcBreak(s,brkCount):null;});
+    // Then floaters (after regular breaks are placed)
+    floaters.forEach(s=>{brkMap[s.id]=(s.hasBreak!==false)?calcBreak(s,brkCount):null;});
+
+    // Primary shop assignment for regular staff
+    const prim=assignPrimary(regularStaff,actShops);
+
     // Build grid
     const grid={};
-    S.staff.forEach(s=>{
+
+    // Regular staff grid
+    regularStaff.forEach(s=>{
       grid[s.id]={};
-      ts.forEach(sl=>{
+      allTs.forEach(sl=>{
         const slM=toM(sl);const inS=slM>=toM(s.start)&&slM<toM(s.end);
-        if(!inS)grid[s.id][sl]={t:'off'};
-        else if(brkMap[s.id]?.slots.includes(sl))grid[s.id][sl]={t:'brk',bStart:brkMap[s.id].bStart,bEnd:brkMap[s.id].bEnd};
-        else grid[s.id][sl]={t:'work',shopId:prim[s.id]||actShops[0].id,moved:false};
+        if(!inS){grid[s.id][sl]={t:'off'};return;}
+        if(brkMap[s.id]?.slots.includes(sl)){grid[s.id][sl]={t:'brk',bStart:brkMap[s.id].bStart,bEnd:brkMap[s.id].bEnd};return;}
+        const shopId=prim[s.id]||actShops[0].id;
+        // If primary shop is closed at this slot, find another open one
+        const sh=actShops.find(x=>x.id===shopId);
+        if(sh&&!shopIsOpen(sh,sl)){
+          const alt=actShops.find(x=>canWorkAt(s,x.id)&&shopIsOpen(x,sl));
+          grid[s.id][sl]={t:'work',shopId:alt?alt.id:shopId,moved:!!alt};
+        } else {
+          grid[s.id][sl]={t:'work',shopId,moved:false};
+        }
       });
     });
-    const getW=(sl)=>S.staff.filter(s=>grid[s.id][sl]?.t==='work');
-    const cntAt=(sl,sid)=>getW(sl).filter(s=>grid[s.id][sl].shopId===sid).length;
-    // Fix coverage gaps — staff can move
-    ts.forEach(sl=>{
-      actShops.forEach(shop=>{
+
+    // Floater grid
+    floaters.forEach(s=>{
+      grid[s.id]={};
+      const brkSlots=brkMap[s.id]?.slots||[];
+      const floatAssign=calcFloaterRotation(s,actShops,brkSlots,allTs);
+      allTs.forEach(sl=>{
+        const slM=toM(sl);const inS=slM>=toM(s.start)&&slM<toM(s.end);
+        if(!inS){grid[s.id][sl]={t:'off'};return;}
+        if(brkSlots.includes(sl)){grid[s.id][sl]={t:'brk',bStart:brkMap[s.id].bStart,bEnd:brkMap[s.id].bEnd};return;}
+        grid[s.id][sl]={t:'work',shopId:floatAssign[sl]||actShops[0].id,isFloat:true};
+      });
+    });
+
+    // Coverage helpers (floaters excluded)
+    const getRegW=(sl)=>regularStaff.filter(s=>grid[s.id][sl]?.t==='work');
+    const cntAt=(sl,sid)=>getRegW(sl).filter(s=>grid[s.id][sl].shopId===sid).length;
+
+    // Fix coverage gaps — move regular staff
+    allTs.forEach(sl=>{
+      actShops.filter(sh=>shopIsOpen(sh,sl)).forEach(shop=>{
         if(cntAt(sl,shop.id)>=shop.minStaff)return;
         const need=shop.minStaff-cntAt(sl,shop.id);
         for(let i=0;i<need;i++){
-          const cand=S.staff.find(s=>{
+          const cand=regularStaff.find(s=>{
             const c=grid[s.id][sl];if(c?.t!=='work'||c.shopId===shop.id)return false;
             if(!canWorkAt(s,shop.id))return false;
             const cur=actShops.find(sh=>sh.id===c.shopId);
@@ -677,18 +896,19 @@ David Brown | Shop B | 9 | 17 | yes | no | yes`;
         }
       });
     });
+
     // Buddy enforcement
-    S.staff.filter(s=>s.needsBuddy).forEach(bs=>{
-      ts.forEach(sl=>{
+    regularStaff.filter(s=>s.needsBuddy).forEach(bs=>{
+      allTs.forEach(sl=>{
         const cell=grid[bs.id][sl];if(cell?.t!=='work')return;
-        const comps=getW(sl).filter(s=>s.id!==bs.id&&grid[s.id][sl].shopId===cell.shopId);
+        const comps=getRegW(sl).filter(s=>s.id!==bs.id&&grid[s.id][sl].shopId===cell.shopId);
         if(comps.length>0)return;
-        const cand=S.staff.find(s=>{
+        const cand=regularStaff.find(s=>{
           if(s.id===bs.id)return false;const c=grid[s.id][sl];
           if(c?.t!=='work'||!canWorkAt(s,cell.shopId)||c.shopId===cell.shopId)return false;
           const cur=actShops.find(sh=>sh.id===c.shopId);
           return!cur||cntAt(sl,cur.id)>cur.minStaff;
-        })||S.staff.find(s=>{
+        })||regularStaff.find(s=>{
           if(s.id===bs.id)return false;const c=grid[s.id][sl];
           return c?.t==='work'&&canWorkAt(s,cell.shopId)&&c.shopId!==cell.shopId;
         });
@@ -696,94 +916,115 @@ David Brown | Shop B | 9 | 17 | yes | no | yes`;
         else cell.buddyAlert=true;
       });
     });
-    // Coverage map
+
+    // Coverage map (regular staff only)
     const cov={};
-    actShops.forEach(sh=>{cov[sh.id]={};ts.forEach(sl=>{cov[sh.id][sl]=cntAt(sl,sh.id);});});
+    actShops.forEach(sh=>{cov[sh.id]={};allTs.forEach(sl=>{cov[sh.id][sl]=cntAt(sl,sh.id);});});
+
     // Alerts
     const alerts=[];
-    S.staff.filter(s=>s.under18).forEach(s=>{const hrs=(toM(s.end)-toM(s.start))/60;if(hrs>S.cfg.u18Max)alerts.push({type:'warn',msg:`⚠️ ${s.name} is Under 18 and working ${hrs.toFixed(1)}h (max ${S.cfg.u18Max}h)`});});
-    S.staff.filter(s=>s.needsBuddy).forEach(bs=>{const lone=ts.filter(sl=>grid[bs.id][sl]?.buddyAlert).length;if(lone)alerts.push({type:'err',msg:`🫂 ${bs.name} has ${lone} slot(s) without a companion — not enough qualified staff to cover`});});
+    activeStaff.filter(s=>s.under18).forEach(s=>{const hrs=(toM(s.end)-toM(s.start))/60;if(hrs>8)alerts.push({type:'warn',msg:`⚠️ ${s.name} is Under 18 and scheduled for ${hrs.toFixed(1)}h (max 8h)`});});
+    regularStaff.filter(s=>s.needsBuddy).forEach(bs=>{const lone=allTs.filter(sl=>grid[bs.id][sl]?.buddyAlert).length;if(lone)alerts.push({type:'err',msg:`🫂 ${bs.name} has ${lone} slot(s) without a companion — not enough qualified staff`});});
     actShops.forEach(sh=>{
-      const gaps=ts.filter(sl=>{const anyW=S.staff.some(s=>{const m=toM(sl);return m>=toM(s.start)&&m<toM(s.end);});return anyW&&cov[sh.id][sl]<sh.minStaff&&cov[sh.id][sl]>0;}).length;
-      if(gaps)alerts.push({type:'warn',msg:`⚡ ${sh.name}: below minimum (${sh.minStaff} person${sh.minStaff>1?'s':''}) for ${gaps} slot(s)`});
+      const gaps=allTs.filter(sl=>{
+        if(!shopIsOpen(sh,sl))return false;
+        const anyW=regularStaff.some(s=>{const m=toM(sl);return m>=toM(s.start)&&m<toM(s.end);});
+        return anyW&&cov[sh.id][sl]<sh.minStaff&&cov[sh.id][sl]>=0;
+      }).length;
+      if(gaps)alerts.push({type:'warn',msg:`⚡ ${sh.name}: below minimum (${sh.minStaff}) for ${gaps} slot(s)`});
     });
-    S.sched={slots:ts,grid,cov,alerts};
+
+    S.sched={slots:allTs,grid,cov,alerts,activeStaff,floaterIds:floaters.map(s=>s.id)};
     save();rGrid();rPrint();
     if(alerts.length)toast(`Schedule ready — ${alerts.length} warning(s)`,'warn');
     else toast('✅ Schedule generated!');
   }
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // OVERVIEW GRID
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function rGrid(){
     const el=document.getElementById('schedGrid');const al=document.getElementById('alertArea');
     if(!S.sched){el.innerHTML=`<div class="empty card"><div class="ei">📋</div><h3>No Schedule</h3></div>`;al.innerHTML='';return;}
-    const{slots:ts,grid,cov,alerts}=S.sched;
+    const{slots:ts,grid,cov,alerts,activeStaff,floaterIds}=S.sched;
     const sm=Object.fromEntries(S.shops.map(s=>[s.id,s]));
     const actShops=S.shops.filter(s=>s.active);
-    // Alerts
+
     al.innerHTML=alerts.map(a=>`<div class="aal ${a.type==='err'?'al-e':'al-w'}">${a.msg}</div>`).join('');
-    // Legend
+
     document.getElementById('lgnd').innerHTML=
             actShops.map(sh=>`<div class="li"><div class="ldot" style="background:${sh.color}"></div><span>${sh.name}</span></div>`).join('')+
             `<div class="li"><div class="ldot" style="background:rgba(96,96,112,.3)"></div><span>Break</span></div>`+
-            `<div class="li"><div class="ldot" style="border:1px dashed rgba(255,255,255,.3);background:transparent"></div><span>Cover move</span></div>`;
+            `<div class="li"><div class="ldot" style="border:2px dashed var(--float);background:transparent"></div><span>Floater</span></div>`;
+
     const hC=ts.map(sl=>`<th class="th-tm${sl.endsWith(':00')?' hr':''}">${sl.endsWith(':00')?sl:'·'}</th>`).join('');
-    const rows=S.staff.map(s=>{
-      const ico=`${s.needsBuddy?'🫂':''}${s.under18?'🌱':''}`;
+
+    const rows=activeStaff.map(s=>{
+      const isFloat=floaterIds.includes(s.id);
+      const ico=`${s.needsBuddy?'🫂':''}${s.under18?'🌱':''}${isFloat?'🔄':''}`;
       const cells=ts.map(sl=>{
         const hr=sl.endsWith(':00');const c=grid[s.id]?.[sl]||{t:'off'};
         if(c.t==='off')return`<td class="tc off${hr?' hr':''}"></td>`;
         if(c.t==='brk')return`<td class="tc brk${hr?' hr':''}">☕<div class="tip">Break ${c.bStart}–${c.bEnd}</div></td>`;
         const sh=sm[c.shopId];if(!sh)return`<td class="tc off${hr?' hr':''}"></td>`;
         const lbl=sh.name.length>4?sh.name.slice(0,4).toUpperCase():sh.name.toUpperCase();
-        return`<td class="tc work${hr?' hr':''}${c.buddyAlert?' ba':''}${c.moved?' mvd':''}" style="background:${sh.color}1A;border-left:3px solid ${sh.color}"><span style="color:${sh.color};font-size:7px">${lbl}</span><div class="tip">${sh.name}${c.moved?' (cover)':''}${c.buddyAlert?' ⚠️ alone!':''} · ${sl}</div></td>`;
+        const floatClass=isFloat?' float-cell':'';
+        const tip=`${sh.name}${c.moved?' (cover)':''}${isFloat?' (floating)':''}${c.buddyAlert?' ⚠️ alone!':''} · ${sl}`;
+        return`<td class="tc work${hr?' hr':''}${floatClass}${c.buddyAlert?' ba':''}${c.moved&&!isFloat?' mvd':''}" style="background:${sh.color}${isFloat?'0F':'1A'};border-left:3px ${isFloat?'dashed':'solid'} ${sh.color}"><span style="color:${sh.color};font-size:7px">${lbl}</span><div class="tip">${tip}</div></td>`;
       }).join('');
       return`<tr><td class="td-n"><div class="td-ni"><div class="td-ndot" style="background:${s.color}"></div><div class="td-ntxt" title="${s.name}">${s.name}</div><span style="font-size:10px;margin-left:2px">${ico}</span></div></td>${cells}</tr>`;
     }).join('');
+
     const covRows=actShops.map(sh=>`<tr class="tr-cv">
-    <td class="cv-lb">${sh.name} (${sh.minStaff}–${sh.maxStaff})</td>
+    <td class="cv-lb">${sh.name} (${sh.minStaff}–${sh.maxStaff})${sh.shopOpen?` · ${sh.shopOpen}–${sh.shopClose||'close'}`:''}</td>
     ${ts.map(sl=>{
-      const c=cov[sh.id]?.[sl]??0;const hr=sl.endsWith(':00');
-      const anyW=S.staff.some(s=>{const m=toM(sl);return m>=toM(s.start)&&m<toM(s.end);});
+      const hr=sl.endsWith(':00');
+      if(!shopIsOpen(sh,sl))return`<td class="cv-closed${hr?' hr':''}">—</td>`;
+      const c=cov[sh.id]?.[sl]??0;
+      const anyW=activeStaff.filter(s=>!floaterIds.includes(s.id)).some(s=>{const m=toM(sl);return m>=toM(s.start)&&m<toM(s.end);});
       if(!anyW)return`<td class="${hr?'hr':''}"></td>`;
       const cls=c===0?'cv-0':c<sh.minStaff?'cv-lo':'cv-ok';
       return`<td class="${cls}${hr?' hr':''}">${c||'!'}</td>`;
     }).join('')}
   </tr>`).join('');
+
     el.innerHTML=`<div class="gw"><table><thead><tr><th class="th-co">Staff · Coverage</th>${hC}</tr></thead><tbody>${rows}${covRows}</tbody></table></div>`;
   }
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // INDIVIDUAL PRINT
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function rPrint(){
     const el=document.getElementById('printArea');
     if(!S.sched){el.innerHTML=`<div class="empty card"><div class="ei">🖨</div><h3>Nothing to Print</h3></div>`;return;}
-    const{slots:ts,grid}=S.sched;
+    const{slots:ts,grid,activeStaff,floaterIds}=S.sched;
     const sm=Object.fromEntries(S.shops.map(s=>[s.id,s]));
     const dateStr=new Date(S.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    const cards=S.staff.map(s=>{
+
+    const cards=activeStaff.map(s=>{
+      const isFloat=floaterIds.includes(s.id);
       const blocks=[];let cur=null;
       ts.forEach(sl=>{
         const slM=toM(sl);if(slM<toM(s.start)||slM>=toM(s.end))return;
         const c=grid[s.id]?.[sl];if(!c)return;
         let lbl,col,bg;
         if(c.t==='brk'){lbl=`☕ Break (${c.bStart}–${c.bEnd})`;col='#64748B';bg='#F8FAFC';}
-        else if(c.t==='work'){const sh=sm[c.shopId];if(!sh)return;lbl=sh.name+(c.moved?' (cover)':'');col=sh.color;bg=sh.color+'18';}
+        else if(c.t==='work'){const sh=sm[c.shopId];if(!sh)return;lbl=sh.name+(c.moved&&!isFloat?' (cover)':'')+(isFloat?' — floating':'');col=sh.color;bg=sh.color+'18';}
         else return;
         if(cur&&cur.lbl===lbl)cur.end=toT(toM(sl)+30);
         else{if(cur)blocks.push(cur);cur={lbl,col,bg,start:sl,end:toT(toM(sl)+30)};}
       });
       if(cur)blocks.push(cur);
       const hrs=((toM(s.end)-toM(s.start))/60).toFixed(1).replace('.0','');
-      const u18w=s.under18&&(toM(s.end)-toM(s.start))>S.cfg.u18Max*60;
-      return`<div class="pc ${s.needsBuddy?'pc-b':s.under18?'pc-u':''}">
+      const u18w=s.under18&&(toM(s.end)-toM(s.start))>8*60;
+      const pcClass=s.needsBuddy?'pc-b':(isFloat?'pc-f':(s.under18?'pc-u':''));
+      return`<div class="pc ${pcClass}">
       ${s.needsBuddy?'<div class="pcno">🫂 Must have someone with them at all times</div>':''}
-      ${u18w?`<div class="pcu">🌱 Under 18 — ${hrs}h shift (max allowed: ${S.cfg.u18Max}h)</div>`:''}
+      ${isFloat?'<div class="pcf">🔄 Floater — rotates between shops throughout the day</div>':''}
+      ${u18w?`<div class="pcu">🌱 Under 18 — ${hrs}h shift (max allowed: 8h)</div>`:''}
       <div class="pch">
-        <div><div class="pcnm"><div style="width:9px;height:9px;background:${s.color};border-radius:50%"></div>${s.name}</div><div class="pcmt">${s.role||'Staff Member'}${s.under18?' · Under 18':''}</div></div>
+        <div><div class="pcnm"><div style="width:9px;height:9px;background:${s.color};border-radius:50%"></div>${s.name}</div>
+        <div class="pcmt">${s.role||'Staff Member'}${s.under18?' · Under 18':''}${isFloat?' · Floater':''}</div></div>
         <div><div class="pcsh">${s.start} – ${s.end} (${hrs}h)</div><div class="pcd">${dateStr}</div></div>
       </div>
       <div class="pslots">${blocks.map(b=>`<div class="pslot" style="background:${b.bg};border-left:3px solid ${b.col}"><div class="pst">${b.start} – ${b.end}</div><div class="psz" style="color:${b.col}">${b.lbl}</div></div>`).join('')}</div>
@@ -792,36 +1033,49 @@ David Brown | Shop B | 9 | 17 | yes | no | yes`;
     el.innerHTML=`<div class="print-grid">${cards}</div>`;
   }
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // SETTINGS
-  // ─────────────────────────────────────────────
-  function saveCfg(){S.cfg={dayStart:document.getElementById('sDayS').value,dayEnd:document.getElementById('sDayE').value,brkLen:+document.getElementById('sBrkL').value,brkFrom:document.getElementById('sBrkF').value,brkTo:document.getElementById('sBrkT').value,brkMin:+document.getElementById('sBrkM').value,u18Max:+document.getElementById('sU18M').value};save();}
-  function loadCfgUI(){const c=S.cfg;document.getElementById('sDayS').value=c.dayStart;document.getElementById('sDayE').value=c.dayEnd;document.getElementById('sBrkL').value=c.brkLen;document.getElementById('sBrkF').value=c.brkFrom;document.getElementById('sBrkT').value=c.brkTo;document.getElementById('sBrkM').value=c.brkMin;document.getElementById('sU18M').value=c.u18Max;}
+  // ═══════════════════════════════════════════════
+  function saveCfg(){
+    S.cfg={
+      dayStart:document.getElementById('sDayS').value,
+      dayEnd:document.getElementById('sDayE').value,
+      brkLen:+document.getElementById('sBrkL').value,
+      brkFrom:document.getElementById('sBrkF').value,
+      brkTo:document.getElementById('sBrkT').value,
+      brkMin:+document.getElementById('sBrkM').value,
+      floatBlock:+document.getElementById('sFltBlk').value,
+    };
+    save();
+  }
+  function loadCfgUI(){
+    const c=S.cfg;
+    document.getElementById('sDayS').value=c.dayStart;
+    document.getElementById('sDayE').value=c.dayEnd;
+    document.getElementById('sBrkL').value=c.brkLen;
+    document.getElementById('sBrkF').value=c.brkFrom;
+    document.getElementById('sBrkT').value=c.brkTo;
+    document.getElementById('sBrkM').value=c.brkMin;
+    document.getElementById('sFltBlk').value=c.floatBlock||3;
+  }
   function exportData(){const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'})),download:`shiftboard-${S.date}.json`});a.click();URL.revokeObjectURL(a.href);toast('Exported!');}
   function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);S={...S,...d};save();init();toast('Imported!');}catch{toast('Invalid file','err');}};r.readAsText(f);e.target.value='';}
   function hardReset(){if(!confirm('Reset everything?'))return;localStorage.removeItem(LS);location.reload();}
 
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   // INIT
-  // ─────────────────────────────────────────────
+  // ═══════════════════════════════════════════════
   function init(){
     document.getElementById('planDate').value=S.date;
-    loadCfgUI();rShops();uShopStats();renderSC('addSC',[]);rStaff();uStaffStats();
+    loadCfgUI();
+    rShops();uShopStats();
+    renderSC('addSC',[]);
+    rStaff();uStaffStats();
     if(S.sched){rGrid();rPrint();}
   }
   document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeMod();}));
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
   load();init();
-
-  document.getElementById('planDate').value = S.date;
-
-  rShops();
-  uShopStats();
-  rStaff();
-  uStaffStats();
-
-  // 👇 THIS is the missing piece
-  renderSC('addSC', []);
 </script>
 </body>
 </html>
