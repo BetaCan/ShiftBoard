@@ -32,6 +32,10 @@ A free, browser-based staff scheduling tool for retail teams. No server needed �
 https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
 ```
 
+```
+https://betacan.github.io/ShiftBoard/
+```
+
 That's it — the app is now hosted and accessible from any device.
 
 ---
@@ -52,24 +56,25 @@ Emma Wilson     | supervisor, till        | 08:00 | 16:00
 ```
 
 ### Rules
-| Field | Details |
-|-------|---------|
-| **Name** | Full name of the staff member |
-| **Skills** | Comma-separated list (see below) |
-| **Start** | 24-hour format, e.g. `09:00` or `9:00` |
-| **End** | 24-hour format, e.g. `17:30` |
+
+| Field      | Details                                |
+| ---------- | -------------------------------------- |
+| **Name**   | Full name of the staff member          |
+| **Skills** | Comma-separated list (see below)       |
+| **Start**  | 24-hour format, e.g. `09:00` or `9:00` |
+| **End**    | 24-hour format, e.g. `17:30`           |
 
 ### Available Skills
 
-| Skill ID | Zone Assigned To |
-|----------|-----------------|
-| `till` | Checkout / Till |
-| `floor` | Shop Floor |
-| `stock` | Stock Room |
-| `fitting` | Fitting Rooms |
-| `service` | Customer Service |
+| Skill ID     | Zone Assigned To                   |
+| ------------ | ---------------------------------- |
+| `till`       | Checkout / Till                    |
+| `floor`      | Shop Floor                         |
+| `stock`      | Stock Room                         |
+| `fitting`    | Fitting Rooms                      |
+| `service`    | Customer Service                   |
 | `supervisor` | Flexible — fills where needed most |
-| `delivery` | Delivery / Goods In |
+| `delivery`   | Delivery / Goods In                |
 
 - Staff can have **multiple skills** — the planner uses them all
 - Skills earlier in the list have higher priority when assigning zones
@@ -80,16 +85,19 @@ Emma Wilson     | supervisor, till        | 08:00 | 16:00
 ## 🗓️ How the Planner Works
 
 ### Time slots
+
 - The schedule is broken into **30-minute intervals**
 - The visual grid shows every slot for the full day
 - Times outside a staff member's shift show blank
 
 ### Break scheduling
+
 - Staff on shifts **longer than 4 hours** automatically receive a break
 - Default break is **45 minutes** (shown as 2 slots in the grid for clarity — exact times shown on hover and in Print view)
 - Break is placed at the **midpoint of each shift**, within the configurable break window (default 11:00–15:00)
 
 ### Zone assignment
+
 - Each time slot, the planner assigns every working staff member to the best zone for their skills
 - **Minimum coverage** is respected first (e.g. Till always has at least 1 person if available)
 - After minimums are met, remaining staff are assigned based on best skill match
@@ -101,15 +109,15 @@ Emma Wilson     | supervisor, till        | 08:00 | 16:00
 
 Available under the **Settings** tab:
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Day Start | 08:00 | Start of the planning day |
-| Day End | 21:00 | End of the planning day |
-| Break Length | 45 min | Duration of each staff break |
-| Earliest Break | 11:00 | Earliest a break can start |
-| Latest Break End | 15:00 | Latest a break can end |
-| Min Shift for Break | 4 hrs | Shortest shift that gets a break |
-| Zone minimums | Varies | Min staff required per zone per slot |
+| Setting             | Default | Description                          |
+| ------------------- | ------- | ------------------------------------ |
+| Day Start           | 08:00   | Start of the planning day            |
+| Day End             | 21:00   | End of the planning day              |
+| Break Length        | 45 min  | Duration of each staff break         |
+| Earliest Break      | 11:00   | Earliest a break can start           |
+| Latest Break End    | 15:00   | Latest a break can end               |
+| Min Shift for Break | 4 hrs   | Shortest shift that gets a break     |
+| Zone minimums       | Varies  | Min staff required per zone per slot |
 
 ---
 
